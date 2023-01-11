@@ -3,7 +3,7 @@ Here's the revised Record contract:
 ```cadence
 ```
 
-Q1.
+Q1. Write a transaction to save a @Record.Collection to the signer's account, making sure to link the appropriate interfaces to the public path.
 
 createCollection.cdc:
 ```cadence
@@ -46,7 +46,7 @@ transaction() {
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211902265-2307b03d-ba15-4e11-90cb-60c0fb5cf5ac.png)
 
-Q2.
+Q2. Write a transaction to mint some @Record.NFTs to the user's @Record.Collection
 
 mintNFTs.cdc
 ```cadence
@@ -85,7 +85,7 @@ transaction(recipient: Address) {
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211902512-8d918ec7-d682-40e0-a37a-f2518bb3b0b7.png)
 
-Q3.
+Q3. Write a script to return an array of all the user's &Record.NFT? in their @Record.Collection
 
 getAllRecords.cdc:
 ```cadence
@@ -114,7 +114,7 @@ Execution:
 
 ![image](https://user-images.githubusercontent.com/39467168/211922155-465c8364-f0c8-4c7c-9aba-0973aaa044fe.png)
 
-Q4.
+Q4. Write a transaction to save a @Artist.Profile to the signer's account, making sure to link it to the public so we can read it
 
 createArtistProfile.cdc
 
@@ -147,7 +147,7 @@ transaction(artistName: String) {
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211931783-32682b08-de89-44df-b393-fbf2c3949d69.png)
 
-Q5.
+Q5. Write a script to fetch a user's &Artist.Profile, borrow their recordCollection, and return an array of all the user's &Record.NFT? in their @Record.Collection from the recordCollection
 
 getArtistRecords.cdc
 ```cadence
@@ -180,3 +180,7 @@ pub fun main(user: Address) {
 
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211935154-c8699371-55a1-4275-95fe-f234dfab35b2.png)
+
+Q6. Write a transaction to unlink a user's @Record.Collection from the public path
+
+
