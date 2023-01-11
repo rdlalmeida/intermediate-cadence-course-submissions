@@ -43,6 +43,9 @@ transaction() {
 }
 ```
 
+Execution:
+
+
 Q2.
 
 mintNFTs.cdc
