@@ -44,7 +44,7 @@ transaction() {
 ```
 
 Execution:
-
+![image](https://user-images.githubusercontent.com/39467168/211902265-2307b03d-ba15-4e11-90cb-60c0fb5cf5ac.png)
 
 Q2.
 
@@ -81,3 +81,6 @@ transaction(recipient: Address) {
     }
 }
 ```
+
+Execution:
+![image](https://user-images.githubusercontent.com/39467168/211902512-8d918ec7-d682-40e0-a37a-f2518bb3b0b7.png)
