@@ -1,6 +1,6 @@
 // import Record from 0xf8d6e0586b0a20c7
 import Record from "../contracts/Record.cdc"
-import NonFungibleToken from "../../../common_resources/contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
 
 transaction(recipient: Address) {
     prepare(signer: AuthAccount) {

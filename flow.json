@@ -25,13 +25,13 @@
 			}
 		},
 		"Record": {
-			"source": "./Chapter1.0/contracts/Record.cdc",
+			"source": "./Chapter1.0/Day1/contracts/Record.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
 		},
 		"Artist": {
-			"source": "./Chapter1.0/contracts/Artist.cdc",
+			"source": "./Chapter1.0/Day1/contracts/Artist.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
