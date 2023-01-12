@@ -3,7 +3,7 @@ Here's the revised Record contract:
 ```cadence
 ```
 
-Q1.
+Q1. Write a transaction to save a @Record.Collection to the signer's account, making sure to link the appropriate interfaces to the public path.
 
 createCollection.cdc:
 ```cadence
@@ -46,7 +46,7 @@ transaction() {
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211902265-2307b03d-ba15-4e11-90cb-60c0fb5cf5ac.png)
 
-Q2.
+Q2. Write a transaction to mint some @Record.NFTs to the user's @Record.Collection
 
 mintNFTs.cdc
 ```cadence
@@ -85,6 +85,161 @@ transaction(recipient: Address) {
 Execution:
 ![image](https://user-images.githubusercontent.com/39467168/211902512-8d918ec7-d682-40e0-a37a-f2518bb3b0b7.png)
 
+<<<<<<< HEAD
 
 Q3.
+=======
+Q3. Write a script to return an array of all the user's &Record.NFT? in their @Record.Collection
+
+getAllRecords.cdc:
+```cadence
+import Record from "../contracts/Record.cdc"
+
+pub fun main(userAddress: Address) {
+    // Start by retrieving the user's Collection (as a reference)
+    let userCollection: &Record.Collection{Record.CollectionPublic} = 
+        getAccount(userAddress).getCapability(Record.CollectionPublicPath).borrow<&Record.Collection{Record.CollectionPublic}>() ??
+            panic("User ".concat(userAddress.toString()).concat(" does not have a Record.Collection configured yet!"))
+
+    // Then use the collection to retrieve the IDs of all NFTs stored in it, as an array
+    let collectionIDs: [UInt64] = userCollection.getIDs()
+
+    // Use a for loop to cycle through all IDs retrieved above and use the borrowRecordNFT function to get a reference to the NFT with that ID
+    var currentNFTRef: &Record.NFT? = nil
+    for id in collectionIDs {
+        currentNFTRef = userCollection.borrowRecordNFT(id: id)
+
+        log("Record NFT with id = ".concat(id.toString()).concat(" contains the song: ".concat(currentNFTRef?.songName!)))
+    }
+}
+```
+
+Execution:
+
+![image](https://user-images.githubusercontent.com/39467168/211922155-465c8364-f0c8-4c7c-9aba-0973aaa044fe.png)
+
+Q4. Write a transaction to save a @Artist.Profile to the signer's account, making sure to link it to the public so we can read it
+
+createArtistProfile.cdc
+
+```cadence
+import Artist from "../contracts/Artist.cdc"
+import Record from "../contracts/Record.cdc"
+
+transaction(artistName: String) {
+    prepare(signer: AuthAccount) {
+        // Retrieve a capability to an existing collection from the address provided, since I need one to create the Profile
+        let collectionCapability: Capability<&Record.Collection{Record.CollectionPublic}> = 
+            signer.getCapability<&Record.Collection{Record.CollectionPublic}>(Record.CollectionPublicPath)
+
+        // Create the Profile resource
+        let artistProfile: @Artist.Profile <- Artist.createProfile(name: artistName, recordCollection: collectionCapability)
+
+        // Save the profile to storage
+        signer.save(<- artistProfile, to: Artist.profileStoragePath)
+
+        // And link it
+        signer.link<&Artist.Profile>(Artist.profilePublicPath, target: Artist.profileStoragePath)
+    }
+
+    execute {
+
+    }
+}
+```
+
+Execution:
+![image](https://user-images.githubusercontent.com/39467168/211931783-32682b08-de89-44df-b393-fbf2c3949d69.png)
+
+Q5. Write a script to fetch a user's &Artist.Profile, borrow their recordCollection, and return an array of all the user's &Record.NFT? in their @Record.Collection from the recordCollection
+
+getArtistRecords.cdc
+```cadence
+import Artist from "../contracts/Artist.cdc"
+import Record from "../contracts/Record.cdc"
+
+pub fun main(user: Address) {
+    // Start by retrieving a reference to the Artist Profile from the user's address
+    let artistProfile: &Artist.Profile = getAccount(user).getCapability(Artist.profilePublicPath).borrow<&Artist.Profile>() ??
+        panic("User ".concat(user.toString()).concat(" does not have a valid artist profile configured yet!"))
+    
+    // Use the Capability stored in the artistProfile to get a reference to its collection
+    let artistCollectionRef: &Record.Collection{Record.CollectionPublic} = 
+        artistProfile.recordCollection.borrow() ??
+            panic("Artist Profile with name ".concat(artistProfile.name).concat("does not have a proper Capability configured yet!"))
+
+    // Repeat the same steps as with the getAllRecords.cdc script
+    let nftIDs: [UInt64] = artistCollectionRef.getIDs()
+
+    var tempNFTRef: &Record.NFT? = nil
+
+    log("Artist Profile named ".concat(artistProfile.name).concat(" has the following Record NFTs in its Collection: "))
+    for id in nftIDs {
+        tempNFTRef = artistCollectionRef.borrowRecordNFT(id: id)!
+
+        log("Record NFT id = ".concat(tempNFTRef!.id.toString()).concat(", song name = ".concat(tempNFTRef!.songName)))
+    }
+}
+```
+
+Execution:
+![image](https://user-images.githubusercontent.com/39467168/211935154-c8699371-55a1-4275-95fe-f234dfab35b2.png)
+
+Q6. Write a transaction to unlink a user's @Record.Collection from the public path
+
+unlinkCollection.cdc:
+```cadence
+import Record from "../contracts/Record.cdc"
+
+transaction() {
+    prepare(signer: AuthAccount){
+        // Check if the public capability is still available
+        if (signer.getLinkTarget(Record.CollectionPublicPath) == nil) {
+            log("No Capabilities found for ".concat(signer.address.toString()).concat(" at path ").concat(Record.CollectionPublicPath.toString()))
+        }
+        else {
+            signer.unlink(Record.CollectionPublicPath)
+
+            log("Public Capability unlinked for user ".concat(signer.address.toString()).concat(" at path ").concat(Record.CollectionPublicPath.toString()))
+        }
+    }
+
+    execute {
+
+    }
+}
+```
+
+Execution:
+
+![image](https://user-images.githubusercontent.com/39467168/212068230-c5580a76-f982-4bb2-a34d-8ee165e38e06.png)
+
+Q7. Explain why the recordCollection inside the user's @Artist.Profile is now invalid
+
+The <code>recordCollection</code> is a <code>Capability<Record.Collection{Record.CollectionPublic}></code>, i.e., a pointer to an element in storage which was made available for public access via a linking operation to a public storage path. But when the element was unlinked in the previous transactions, the pointer still remains but now is not pointing to anything useful, or better yet, its pointing to nil. A borrow operation on that Capability, though possible, returns the nil value and any further operations on it are going to end up in an error.
+    
+Q8. Write a script that proves why your answer to #7 is true by trying to borrow a user's recordCollection from their &Artist.Profile
+    
+testInvalidCapability.cdc:
+```cadence
+import Record from "../contracts/Record.cdc"
+import Artist from "../contracts/Artist.cdc"
+
+pub fun main(user: Address) {
+    // This one is but a cheap adapatation from the getArtistRecord.cdc script
+    let artistProfile: &Artist.Profile = getAccount(user).getCapability(Artist.profilePublicPath).borrow<&Artist.Profile>() ??
+        panic("User ".concat(user.toString()).concat(" does not have a valid artist profile configured yet!"))
+    
+    // Use the Capability stored in the artistProfile to get a reference to its collection. This should trigger the panic statement if the Capability is invalid
+    let artistCollectionRef: &Record.Collection{Record.CollectionPublic} = 
+        artistProfile.recordCollection.borrow() ??
+            panic("Artist Profile with name ".concat(artistProfile.name).concat("does not have a proper Capability configured yet!"))
+    
+    log("Weird... If you are seeing this message its because the Artist.Profile Capability was not properly invalidated. Its still kicking...")
+}
+```
+    
+Execution:
+![image](https://user-images.githubusercontent.com/39467168/212075756-56116fc2-9036-4cec-9aaf-1ec945eb5e0b.png)
+>>>>>>> e51d46dcb6ff3bfe8b5d4793009213f4b4660f29
 
