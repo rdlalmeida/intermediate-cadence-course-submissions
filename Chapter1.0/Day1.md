@@ -183,4 +183,33 @@ Execution:
 
 Q6. Write a transaction to unlink a user's @Record.Collection from the public path
 
+unlinkCollection.cdc:
+```cadence
+import Record from "../contracts/Record.cdc"
 
+transaction() {
+    prepare(signer: AuthAccount){
+        // Check if the public capability is still available
+        if (signer.getLinkTarget(Record.CollectionPublicPath) == nil) {
+            log("No Capabilities found for ".concat(signer.address.toString()).concat(" at path ").concat(Record.CollectionPublicPath.toString()))
+        }
+        else {
+            signer.unlink(Record.CollectionPublicPath)
+
+            log("Public Capability unlinked for user ".concat(signer.address.toString()).concat(" at path ").concat(Record.CollectionPublicPath.toString()))
+        }
+    }
+
+    execute {
+
+    }
+}
+```
+
+Execution:
+
+![image](https://user-images.githubusercontent.com/39467168/212068230-c5580a76-f982-4bb2-a34d-8ee165e38e06.png)
+
+Q7. Explain why the recordCollection inside the user's @Artist.Profile is now invalid
+
+The <code>recordCollection</code> is a <code>Capability<Record.Collection{Record.CollectionPublic}></code>, i.e., a pointer to an element in storage which was made available for public access via a linking operation to a public storage path. But when the element was unlinked in the previous transactions, the pointer still remains but now is not pointing to anything useful, or better yet, its pointing to nil. A borrow operation on that Capability, though possible, returns the nil value and any further operations on it are going to end up in an error.
