@@ -213,3 +213,28 @@ Execution:
 Q7. Explain why the recordCollection inside the user's @Artist.Profile is now invalid
 
 The <code>recordCollection</code> is a <code>Capability<Record.Collection{Record.CollectionPublic}></code>, i.e., a pointer to an element in storage which was made available for public access via a linking operation to a public storage path. But when the element was unlinked in the previous transactions, the pointer still remains but now is not pointing to anything useful, or better yet, its pointing to nil. A borrow operation on that Capability, though possible, returns the nil value and any further operations on it are going to end up in an error.
+    
+Q8. Write a script that proves why your answer to #7 is true by trying to borrow a user's recordCollection from their &Artist.Profile
+    
+testInvalidCapability.cdc:
+```cadence
+import Record from "../contracts/Record.cdc"
+import Artist from "../contracts/Artist.cdc"
+
+pub fun main(user: Address) {
+    // This one is but a cheap adapatation from the getArtistRecord.cdc script
+    let artistProfile: &Artist.Profile = getAccount(user).getCapability(Artist.profilePublicPath).borrow<&Artist.Profile>() ??
+        panic("User ".concat(user.toString()).concat(" does not have a valid artist profile configured yet!"))
+    
+    // Use the Capability stored in the artistProfile to get a reference to its collection. This should trigger the panic statement if the Capability is invalid
+    let artistCollectionRef: &Record.Collection{Record.CollectionPublic} = 
+        artistProfile.recordCollection.borrow() ??
+            panic("Artist Profile with name ".concat(artistProfile.name).concat("does not have a proper Capability configured yet!"))
+    
+    log("Weird... If you are seeing this message its because the Artist.Profile Capability was not properly invalidated. Its still kicking...")
+}
+```
+    
+Execution:
+![image](https://user-images.githubusercontent.com/39467168/212075756-56116fc2-9036-4cec-9aaf-1ec945eb5e0b.png)
+
