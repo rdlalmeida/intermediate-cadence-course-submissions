@@ -35,6 +35,12 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"FlowHotel": {
+			"source": "./Chapter1.0/Day2/contracts/FlowHotel.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -92,9 +98,7 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"NonFungibleToken",
-				"Record",
-				"Artist"
+				"FlowHotel"
 			]
 		},
 		"testnet": {

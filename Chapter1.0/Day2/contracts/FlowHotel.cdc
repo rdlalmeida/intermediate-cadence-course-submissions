@@ -2,13 +2,19 @@ pub contract FlowHotel {
     pub event roomCreated(roomNumber: UInt64)
     pub event roomChecked(roomNumber: UInt64)
     pub event roomFree(roomNumber: UInt64)
-    pub event accessDenied(roomNumber: UInt64)
+    pub event roomOpen(roomNumber: UInt64)
+    pub event roomClosed(roomNumber: UInt64)
+
+    pub let hotelStoragePath: StoragePath
 
     pub resource Room {
         pub let roomNumber: UInt64
         pub(set) var doorStatus: Bool
         pub(set) var checkedIn: Bool
         pub(set) var clientName: String?
+
+        // Use this one to control the room access
+        pub var roomController: Capability<&RoomController>?
 
         init(roomNumber: UInt64) {
             self.roomNumber = roomNumber
@@ -21,7 +27,29 @@ pub contract FlowHotel {
 
             // Set the client name to nil for any free room
             self.clientName = nil
+
+            // Initialize the capability as nil
+            self.roomController = nil
         }
+    }
+
+    // Because References are ephemeral and cannot be stored, I need to create a Resource to work as a wrapper, of sorts, for this case.
+    // The Hotel whants to give a Room to the client without actually giving him the actual Room, therefore, a Reference is ideal for this.
+    // But since these cannot be stored, I need to give the client this wrapper instead with the reference to his room in it
+    pub resource RoomKeyHolder {
+        pub var roomReference: Capability<&Room>?
+
+        init() {
+            self.roomReference = nil
+        }
+    }
+
+    pub fun createRoomKeyHolder(): @RoomKeyHolder {
+        return <- create RoomKeyHolder()
+    }
+
+    pub fun destroyRoomKeyHolder(roomKeyHolder: @RoomKeyHolder) {
+        destroy roomKeyHolder
     }
 
     pub resource Hotel {
@@ -59,6 +87,8 @@ pub contract FlowHotel {
 
             // Return the resource back to the Hotel array
             self.Rooms[roomNumber] <-! roomToChange
+
+            emit roomChecked(roomNumber: roomNumber)
         }
 
         // Function to check out of a room
@@ -74,6 +104,8 @@ pub contract FlowHotel {
             roomToChange.checkedIn = false
 
             self.Rooms[roomNumber] <-! roomToChange
+
+            emit roomFree(roomNumber: roomNumber)
         }
 
         // Function to create a series of rooms based on an array of room numbers
@@ -118,7 +150,7 @@ pub contract FlowHotel {
         }
     }
 
-    pub fun createHotel(roomNumbers: [UInt64]): @Hotel {
+    pub fun createHotel(): @Hotel {
         return <- create Hotel()
     }
 
@@ -143,17 +175,37 @@ pub contract FlowHotel {
             let phantomRoom: @Room? <- hotel.Rooms.insert(key: roomNumber, <- roomToChange)
 
             if (phantomRoom != nil) {
-                panic("CAUTION: There was a valid Room alread set in number ".concat(roomNumber.toString()).concat(". This should not have happened!"))
+                panic("CAUTION: There was a valid Room already set in number ".concat(roomNumber.toString()).concat(". This should not have happened!"))
             }
 
             destroy phantomRoom
+
+            emit roomOpen(roomNumber: roomNumber)
         }
 
         // The function to close the room is, understandibly so, much more permissive
-        pub fun closeRoom(roomNumber: UInt64): Bool {
-            // CONTINUE FROM HERE!
-            return false
+        pub fun closeRoom(roomNumber: UInt64, hotel: &Hotel): Void {
+            // Same process: retrieve the Room resource from the Hotel reference and change the flag. No need to verify anything else for closing a room
+            let roomToClose: @Room <- hotel.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" does not exists in this hotel!"))
+
+            // Close the door
+            roomToClose.doorStatus = false
+
+            // Return the reference back to the main array
+            let phantomRoom: @Room? <- hotel.Rooms.insert(key: roomNumber, <- roomToClose)
+
+            if (phantomRoom != nil) {
+                panic("CAUTION: There was a valid Room already set in number ".concat(roomNumber.toString()).concat(". This should not have hapenned!"))
+            }
+
+            destroy phantomRoom
+
+            emit roomClosed(roomNumber: roomNumber)
         }
+    }
+
+    init() {
+        self.hotelStoragePath = /storage/FlowHotel
     }
 }
  
