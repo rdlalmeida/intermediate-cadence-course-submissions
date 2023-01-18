@@ -348,7 +348,9 @@ pub contract FlowHotel {
 
 I'm going to create an Hotel with an admin account (this emulates the Hotel administrator), use another account to create the RoomKeyHolder(the Hotel client) and the check in that client in the Hotel, which associates a Room Capability, of a Room resource previously saved and linked to a Private Storage path:
 * Create an Hotel for the emulator-account Account:
+
 createHotel.cdc:
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -377,7 +379,9 @@ transaction() {
 ![image](https://user-images.githubusercontent.com/39467168/213182793-8c7c0037-89f8-4935-b0e1-c6dfc55e50e1.png)
 
 * Before checking in the client (account01), it needs to create, save and link the RoomKeyHolder resource to its storage:
+
 createRoomKeyHolder.cdc
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -406,7 +410,9 @@ transaction() {
 ![image](https://user-images.githubusercontent.com/39467168/213183223-ccdc0dcc-5df3-4b99-bea7-f545dc1c677e.png)
 
 * The client is ready to be checked in:
+
 checkInClient.cdc
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -446,7 +452,9 @@ transaction(clientName: String, clientAddress: Address) {
 Client checked in in Room 1
 
 ** Now that the client is properly checked in, use the inherited Capability to play around with the Hotel door:
+
 messWithHotelRoomDoor.cdc
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -479,6 +487,7 @@ transaction() {
 ** The client checks out of the room properly. The check out function removes the Room resource from storage (which in this case signals that Room resource as available for future check ins) and unlinks the Capability and disables the Room control from the client's RoomKeyHolder Resource:
 
 checkOutClient.cdc:
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -511,6 +520,7 @@ The Capability in the RoomKeyHolder is nil, as expected
 ** The client got too drunk in the local strip club, fell asleep on a glitter covered table and missed the checkout. The hotel manager is pissed off and decides to revoke his door priviledges:
 
 revokeClientRoomAccess.cdc:
+
 ```cadence
 import FlowHotel from "../contracts/FlowHotel.cdc"
 
@@ -537,5 +547,3 @@ If the client stumbles into the hotel and tries to open the door:
 ![image](https://user-images.githubusercontent.com/39467168/213202431-27ff801c-9239-49f9-a6ff-9f8be8b2a6bc.png)
 
 Same result: Capability is nil at this point. NOTE: In this scenario, the Room needs to be properly checkout at some point, but that's outside the context of this scenario
-
-
