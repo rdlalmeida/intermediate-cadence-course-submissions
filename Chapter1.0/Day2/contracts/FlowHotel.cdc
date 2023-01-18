@@ -2,19 +2,19 @@ pub contract FlowHotel {
     pub event roomCreated(roomNumber: UInt64)
     pub event roomChecked(roomNumber: UInt64)
     pub event roomFree(roomNumber: UInt64)
-    pub event roomOpen(roomNumber: UInt64)
-    pub event roomClosed(roomNumber: UInt64)
+    pub event roomOpen(roomNumber: UInt64, clientName: String?)
+    pub event roomClosed(roomNumber: UInt64, clientName: String?)
+    pub event roomAccessRevoked(roomNumber: UInt64, clientName: String?)
 
     pub let hotelStoragePath: StoragePath
+    pub let keyHolderStoragePath: StoragePath
+    pub let keyHolderPublicPath: PublicPath
 
     pub resource Room {
         pub let roomNumber: UInt64
-        pub(set) var doorStatus: Bool
+        pub var doorStatus: Bool
         pub(set) var checkedIn: Bool
         pub(set) var clientName: String?
-
-        // Use this one to control the room access
-        pub var roomController: Capability<&RoomController>?
 
         init(roomNumber: UInt64) {
             self.roomNumber = roomNumber
@@ -27,24 +27,58 @@ pub contract FlowHotel {
 
             // Set the client name to nil for any free room
             self.clientName = nil
+        }
 
-            // Initialize the capability as nil
-            self.roomController = nil
+        pub fun openRoom(): Void {
+
+            self.doorStatus = true
+
+            emit roomOpen(roomNumber: self.roomNumber, clientName: self.clientName)
+        }
+
+        pub fun closeRoom(): Void {
+            self.doorStatus = false
+
+            emit roomClosed(roomNumber: self.roomNumber, clientName: self.clientName)
         }
     }
 
-    // Because References are ephemeral and cannot be stored, I need to create a Resource to work as a wrapper, of sorts, for this case.
-    // The Hotel whants to give a Room to the client without actually giving him the actual Room, therefore, a Reference is ideal for this.
-    // But since these cannot be stored, I need to give the client this wrapper instead with the reference to his room in it
+    // Function to create a single room
+    pub fun createRoom(roomNumber: UInt64): @Room {
+        let newRoom: @Room <- create Room(roomNumber: roomNumber)
+
+        emit roomCreated(roomNumber: roomNumber)
+
+        return <- newRoom
+    }
+
+    // Function to create a series of rooms based on an array of room numbers
+    pub fun createAllRooms(roomNumbers: [UInt64]): @{UInt64: Room} {
+        // Create an emtry dictionary to store all the rooms as they are created
+        var rooms: @{UInt64: Room} <- {}
+
+        // Cycle through the array of room numbers
+        for roomNumber in roomNumbers {
+            rooms[roomNumber] <-! self.createRoom(roomNumber: roomNumber)
+        }
+
+        return <- rooms
+    }
+
+    // The main Resource used to control the access to a Room resource, via a Capability
     pub resource RoomKeyHolder {
-        pub var roomReference: Capability<&Room>?
+        pub var roomCapability: Capability<&FlowHotel.Room>?
 
         init() {
-            self.roomReference = nil
+            self.roomCapability = nil
+        }
+
+        pub fun setRoomCapability(roomCapability: Capability<&FlowHotel.Room>): Void {
+            self.roomCapability = roomCapability
         }
     }
 
-    pub fun createRoomKeyHolder(): @RoomKeyHolder {
+    pub fun createRoomKeyHolder(): @FlowHotel.RoomKeyHolder {
         return <- create RoomKeyHolder()
     }
 
@@ -53,25 +87,101 @@ pub contract FlowHotel {
     }
 
     pub resource Hotel {
-        pub(set) var Rooms: @{UInt64: Room}
+        pub var Rooms: @{UInt64: Room}
 
         init () {
             // Simple trick to avoid having to insert an array whenever I need to create a new Hotel. Handy for testing
-            let rooms: [UInt64] = [1, 2, 3, 4, 5, 6, 7, 8]
-            self.Rooms <- self.createAllRooms(roomNumbers: rooms)
+            let rooms: [UInt64] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            self.Rooms <- FlowHotel.createAllRooms(roomNumbers: rooms)
         }
 
-        // Function to create a single room
-        pub fun createRoom(roomNumber: UInt64): @Room {
-            let newRoom: @Room <- create Room(roomNumber: roomNumber)
+        // Function to return a "custom" Private storage path based on the room number
+        pub fun getRoomPrivateStoragePath(roomNumber: UInt64): PrivatePath {
 
-            emit roomCreated(roomNumber: roomNumber)
+            // let privatePathString: String = "/private/Room".concat(roomNumber.toString())
 
-            return <- newRoom
+            // return PrivatePath(identifier: privatePathString)!
+
+            // NOTE: I need to do the path building path logic "the hard way", i.e., using a switch, because I have no idea why the Path building functions
+            // always return nil. I just want this to work somehow but this limits this solution quite a lot
+            switch roomNumber {
+                case 1:
+                    return /private/Room1
+                case 2:
+                    return /private/Room2
+                case 3:
+                    return /private/Room3
+                case 4:
+                    return /private/Room4
+                case 5:
+                    return /private/Room5
+                case 6:
+                    return /private/Room6
+                case 7:
+                    return /private/Room7
+                case 8:
+                    return /private/Room8
+                case 9:
+                    return /private/Room9
+                case 10:
+                    return /private/Room10
+                default: 
+                    return /private/RoomDefault
+            }
+        }
+
+        // Same thing as before but to a path on normal Storage
+        pub fun getRoomStoragePath(roomNumber: UInt64): StoragePath {
+            // let storagePathString: String = "/storage/Room".concat(roomNumber.toString())
+            // return StoragePath(identifier: storagePathString)!
+
+            // Same as before
+            switch roomNumber {
+                case 1:
+                    return /storage/Room1
+                case 2:
+                    return /storage/Room2
+                case 3:
+                    return /storage/Room3
+                case 4:
+                    return /storage/Room4
+                case 5:
+                    return /storage/Room5
+                case 6:
+                    return /storage/Room6
+                case 7:
+                    return /storage/Room7
+                case 8:
+                    return /storage/Room8
+                case 9:
+                    return /storage/Room9
+                case 10:
+                    return /storage/Room10
+                default:
+                    return /storage/RoomDefault
+            }
+        }
+
+        // This function checks the Room array and returns the room number of the first available room, i.e., not checked out. If none are available, it
+        // returns nil
+        pub fun getNextAvailableRoom(): UInt64? {
+            // Get all the room numbers. NOTE: because I remove checked in rooms from this array whenever they get checked in, the [Int64] array is actually
+            // a list of all available rooms
+            let roomNumbers: [UInt64] = self.Rooms.keys
+
+            // Cycle through the room number array and check the availability of each room
+            for roomNumber in roomNumbers{
+                if (!self.getRoomCheckedInStatus(roomNumber: roomNumber)) {
+                    // If a un-checked in Room is found, return its room number
+                    return roomNumber
+                }
+            }
+
+            return nil
         }
 
         // Function to check in a room to a specif client
-        pub fun checkInRoom(roomNumber: UInt64, clientName: String): Void {
+        pub fun checkInRoom(roomNumber: UInt64, clientName: String, keyHolderRef: &RoomKeyHolder): Void {
             pre {
                 // Check first if the room in question is not checked in yet
                 !self.getRoomCheckedInStatus(roomNumber: roomNumber): "Room ".concat(roomNumber.toString()).concat(" was already checked in to "
@@ -80,59 +190,108 @@ pub contract FlowHotel {
 
             // All good. Proceed with the check in
             // To change the internal parameters I need to retrieve the Room resource first
-            let roomToChange: @Room <- self.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" does not exist in this Hotel!"))
+            let roomToChange: @Room <- self.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" is not available!"))
 
             roomToChange.checkedIn = true
             roomToChange.clientName = clientName
 
-            // Return the resource back to the Hotel array
-            self.Rooms[roomNumber] <-! roomToChange
+            // After a room is checked in, save it to storage and create the associated private capability so that it can be associated to a
+            // client's RoomKeyHolder. Removing the Room from the main array can also be seen as a way to detect if the Room was checked in or not
+            // Fist I need to clean up the storage path by the same reason of always
+            FlowHotel.account.unlink(self.getRoomPrivateStoragePath(roomNumber: roomNumber))
+            let randomResource: @AnyResource <- FlowHotel.account.load<@AnyResource>(from: self.getRoomStoragePath(roomNumber: roomNumber))
+            destroy randomResource
+
+            FlowHotel.account.save(<- roomToChange, to: self.getRoomStoragePath(roomNumber: roomNumber))
+            FlowHotel.account.link<&FlowHotel.Room>(self.getRoomPrivateStoragePath(roomNumber: roomNumber), target: self.getRoomStoragePath(roomNumber: roomNumber))
+
+            // Now that I have the Room resource safely stored into Private storage, I can associate its Capability to the keyHolder reference to give control of
+            // it to the client
+            let roomCapability: Capability<&FlowHotel.Room> = FlowHotel.account.getCapability<&FlowHotel.Room>(self.getRoomPrivateStoragePath(roomNumber: roomNumber))
+            keyHolderRef.setRoomCapability(roomCapability: roomCapability)
 
             emit roomChecked(roomNumber: roomNumber)
+
         }
 
         // Function to check out of a room
         pub fun checkOutRoom(roomNumber: UInt64): Void {
             pre{
                 // The only pre condition is that the room door must be closed... out of cortesy rather than anything else
-                !self.getRoomDoorStatus(roomNumber: roomNumber): "Room ".concat(roomNumber.toString()).concat(" still has its door wide open. Close it first and try again.")
+                self.getRoomDoorStatus(roomNumber: roomNumber): "Room ".concat(roomNumber.toString()).concat(" still has its door wide open. Close it first and try again.")
+                !self.getRoomCheckedInStatus(roomNumber: roomNumber): "Room ".concat(roomNumber.toString()).concat(" is not checked in! Confirm the room number to check out please"
             }
 
-            let roomToChange: @Room <- self.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" does not exist in this Hotel!"))
+            // If the room checked in, it is saved in storage. Retrieve it and panic if the room is not there
+            let roomToCheckOut: @Room <- FlowHotel.account.load<@FlowHotel.Room>(from: self.getRoomStoragePath(roomNumber: roomNumber)) ??
+                panic("Room ".concat(roomNumber.toString()).concat(" is not available in storage!"))
+            
+            roomToCheckOut.clientName = nil
+            roomToCheckOut.checkedIn = false
 
-            roomToChange.clientName = nil
-            roomToChange.checkedIn = false
+            // Remove the private capability too. It should be worthless now because the resource is not in storage anymore, but still
+            FlowHotel.account.unlink(self.getRoomPrivateStoragePath(roomNumber: roomNumber))
 
-            self.Rooms[roomNumber] <-! roomToChange
+            // Save the room back into the internal array to make it available for future check ins
+            self.Rooms[roomNumber] <-! roomToCheckOut
 
             emit roomFree(roomNumber: roomNumber)
         }
 
-        // Function to create a series of rooms based on an array of room numbers
-        pub fun createAllRooms(roomNumbers: [UInt64]): @{UInt64: Room} {
-            // Create an emtry dictionary to store all the rooms as they are created
-            var rooms: @{UInt64: Room} <- {}
+        // Emergency function that unlinks the Private capability if the client misses the checkout deadline or misbehaves somehow. The room remains "checked in",
+        // of sorts,
+        pub fun removeRoomAccess(roomNumber: UInt64) {
+            FlowHotel.account.unlink(self.getRoomPrivateStoragePath(roomNumber: roomNumber))
 
-            // Cycle through the array of room numbers
-            for roomNumber in roomNumbers {
-                rooms[roomNumber] <-! self.createRoom(roomNumber: roomNumber)
-            }
-
-            return <- rooms
+            emit roomAccessRevoked(roomNumber: roomNumber, clientName: self.getRoomClientName(roomNumber: roomNumber))
         }
 
         // Set of functions to retrieve various stats about a room.
         // In retrospective, I should've done this in a single function and return a status struct instead...
+        // Because my Rooms are either in the internal storage array or saved away in storage, I need to check both for the next functions...
         pub fun getRoomCheckedInStatus(roomNumber: UInt64): Bool {
-            return (&self.Rooms[roomNumber] as &Room?)!.checkedIn
+            // Try the internal array first
+            var roomRef: &Room? = &self.Rooms[roomNumber] as &Room?
+
+            if (roomRef == nil) {
+                // Try the storage then
+                roomRef = FlowHotel.account.borrow<&FlowHotel.Room>(from: self.getRoomStoragePath(roomNumber: roomNumber))
+
+                // Panic if this ref is still nil
+                if (roomRef == nil) {
+                    panic("Unable to find a valid Room reference for room number ".concat(roomNumber.toString()))
+                }
+            }
+
+            return roomRef!.checkedIn
         }
 
         pub fun getRoomDoorStatus(roomNumber: UInt64): Bool {
-            return (&self.Rooms[roomNumber] as &Room?)!.doorStatus
+            var roomRef: &Room? = &self.Rooms[roomNumber] as &Room?
+
+            if (roomRef == nil) {
+                roomRef = FlowHotel.account.borrow<&FlowHotel.Room>(from: self.getRoomStoragePath(roomNumber: roomNumber))
+
+                if (roomRef == nil) {
+                    panic("Unable to find a valid Room reference for room number ".concat(roomNumber.toString()))
+                }
+            }
+
+            return roomRef!.checkedIn
         }
 
         pub fun getRoomClientName(roomNumber: UInt64): String {
-            var clientName: String? = (&self.Rooms[roomNumber] as &Room?)!.clientName
+            var roomRef: &Room? = &self.Rooms[roomNumber] as &Room?
+
+            if (roomRef == nil) {
+                roomRef = FlowHotel.account.borrow<&FlowHotel.Room>(from: self.getRoomStoragePath(roomNumber: roomNumber))
+
+                if (roomRef == nil) {
+                    panic("Unable to find a valid Room reference for a room number ".concat(roomNumber.toString()))
+                }
+            }
+
+            var clientName: String? = roomRef!.clientName
 
             if (clientName == nil) {
                 // This takes care of the situation where the room has not been checked yet,
@@ -154,58 +313,10 @@ pub contract FlowHotel {
         return <- create Hotel()
     }
 
-    pub resource RoomController {
-        // Function to open the room door
-        pub fun openRoom(hotel: &Hotel, roomNumber: UInt64, clientName: String): Void {
-            pre {
-                // Check first if the room was checked by this client
-                hotel.getRoomClientName(roomNumber: roomNumber) == clientName: 
-                    "Room ".concat(roomNumber.toString().concat(" is not registered to ".concat(clientName).concat("Please go and scream at the receptionist")))
-                // And check if the room was properly checked in
-                hotel.getRoomCheckedInStatus(roomNumber: roomNumber): 
-                    "Room ".concat(roomNumber.toString()).concat(" was not checked in yet! Go see the idiot at the reception desk and break one of his kneecaps if needed") 
-            }
-
-            let roomToChange: @Room <- hotel.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" does not exists in this hotel!"))
-
-            // Open the door
-            roomToChange.doorStatus = true
-
-            // Put the room back into the main array
-            let phantomRoom: @Room? <- hotel.Rooms.insert(key: roomNumber, <- roomToChange)
-
-            if (phantomRoom != nil) {
-                panic("CAUTION: There was a valid Room already set in number ".concat(roomNumber.toString()).concat(". This should not have happened!"))
-            }
-
-            destroy phantomRoom
-
-            emit roomOpen(roomNumber: roomNumber)
-        }
-
-        // The function to close the room is, understandibly so, much more permissive
-        pub fun closeRoom(roomNumber: UInt64, hotel: &Hotel): Void {
-            // Same process: retrieve the Room resource from the Hotel reference and change the flag. No need to verify anything else for closing a room
-            let roomToClose: @Room <- hotel.Rooms.remove(key: roomNumber) ?? panic("Room ".concat(roomNumber.toString()).concat(" does not exists in this hotel!"))
-
-            // Close the door
-            roomToClose.doorStatus = false
-
-            // Return the reference back to the main array
-            let phantomRoom: @Room? <- hotel.Rooms.insert(key: roomNumber, <- roomToClose)
-
-            if (phantomRoom != nil) {
-                panic("CAUTION: There was a valid Room already set in number ".concat(roomNumber.toString()).concat(". This should not have hapenned!"))
-            }
-
-            destroy phantomRoom
-
-            emit roomClosed(roomNumber: roomNumber)
-        }
-    }
-
     init() {
         self.hotelStoragePath = /storage/FlowHotel
+        self.keyHolderStoragePath = /storage/RoomKeyHolder
+        self.keyHolderPublicPath = /public/RoomKeyHolder
     }
 }
  
