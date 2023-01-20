@@ -24,6 +24,24 @@
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
 		},
+		"ExampleNFT": {
+			"source": "../common_resources/contracts/ExampleNFT.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"TopShot": {
+			"source": "../common_resources/contracts/TopShot.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"TopShotLocking": {
+			"source": "../common_resources/contracts/TopShotLocking.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
 		"Record": {
 			"source": "./Chapter1.0/Day1/contracts/Record.cdc",
 			"aliases": {
@@ -98,7 +116,10 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"FlowHotel"
+				"FungibleToken",
+				"NonFungibleToken",
+				"MetadataViews",
+				"ExampleNFT"
 			]
 		},
 		"testnet": {
