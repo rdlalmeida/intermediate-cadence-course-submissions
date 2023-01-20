@@ -53,8 +53,13 @@ transaction() {
 ```
 
 Lets check it out:
+Create a new Collection with the transaction above from the emulator account(0xf8d6e0586b0a20c7):
+![image](https://user-images.githubusercontent.com/39467168/213733989-704ae375-35c2-439f-82d2-f01dcb6e33bc.png)
+
 Running the first script, it fails:
 
+![image](https://user-images.githubusercontent.com/39467168/213733606-c7825c37-2546-41b8-8ee9-dd8ad730167e.png)
 
 But the other one works:
 
+![image](https://user-images.githubusercontent.com/39467168/213733718-1c1a2cc9-3bb3-4e6e-8712-9b7e98ede49d.png)
