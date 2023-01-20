@@ -65,3 +65,42 @@ Running the first script, it fails:
 But the other one works:
 
 ![image](https://user-images.githubusercontent.com/39467168/213733718-1c1a2cc9-3bb3-4e6e-8712-9b7e98ede49d.png)
+
+Q4. What do you think the transaction looked like to set up this user's collection?
+
+In this case, it seems that the transaction that created the Collection omitted the main type of the Resource:
+
+```cadence
+import ExampleNFT from "../../../../common_resources/contracts/ExampleNFT.cdc"
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
+
+transaction() {
+    prepare(signer: AuthAccount) {
+        // Create a collection but do so without defining a specific type but specifying the interface that it must conform to
+        // FUN FACT: If the type of the Collection is not specified, Cadence doesn't bother you about casting the output from the createEmptyCollection(). But if you do
+        // and the return and expected types don't match, Cadence tells you about it and forces the downcast
+        let collection: @AnyResource{NonFungibleToken.CollectionPublic} <- ExampleNFT.createEmptyCollection()
+
+        // Save and link the Collection as before
+        signer.save(<- collection, to: /storage/badTypeCollection)
+        signer.link<&AnyResource{NonFungibleToken.CollectionPublic}>(/public/badTypeCollection, target: /storage/badTypeCollection)
+    }
+
+    execute {
+
+    }
+}
+```
+
+Lets see if it works:
+
+Create the collection:
+![image](https://user-images.githubusercontent.com/39467168/213746450-ac3390c7-ada3-4728-997e-d1867298699f.png)
+
+Running the first script, it fails as predicted since it expects a @ExampleNFT.Collection and gets a @AnyResource instead, which essentially loads a nil into the variable:
+
+![image](https://user-images.githubusercontent.com/39467168/213746727-9d5655e7-ea41-40d2-958f-4a69d8866c66.png)
+
+Running the second script that specifies the type to retrieve as @AnyResource, as well as the interface, it works:
+
+![image](https://user-images.githubusercontent.com/39467168/213747612-8cfee5bb-3b48-4617-ae8c-133c4a1fce0c.png)
