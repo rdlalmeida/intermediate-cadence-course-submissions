@@ -31,6 +31,7 @@ transaction() {
 Q3. What do you think the transaction looked like to set up this user's collection?
 
 The transaction that created and linked the Collection would be something like this:
+
 ```cadence
 import ExampleNFT from "../../../../common_resources/contracts/ExampleNFT.cdc"
 import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
@@ -53,6 +54,7 @@ transaction() {
 ```
 
 Lets check it out:
+
 Create a new Collection with the transaction above from the emulator account(0xf8d6e0586b0a20c7):
 ![image](https://user-images.githubusercontent.com/39467168/213733989-704ae375-35c2-439f-82d2-f01dcb6e33bc.png)
 
