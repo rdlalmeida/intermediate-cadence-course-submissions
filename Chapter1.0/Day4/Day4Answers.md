@@ -48,4 +48,19 @@ transaction(name1: String, name2: String) {
     }
 }
 ```
+It returns:
+
+![image](https://user-images.githubusercontent.com/39467168/214044424-f6080479-8204-473b-9f1f-45974ca1e578.png)
+
+The 2 Resources have different names but their types are identical.
+
+Q3. Is it possible for two different resources, that have a different type, to have the same identifier?
+
+No, by the same reason above. If the types are different then the last element of the identifier String is different too, and so is the identifier itself since it is composed from them.
+
+Q4. Based on the included comments:
+- What is wrong with the following script? 
+- Explain in detail how someone hack this script to always return `true`. 
+- Then, what are two ways we could fix this script to make sure it is safe?
+
 
