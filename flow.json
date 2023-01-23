@@ -122,7 +122,10 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"ResourceTypes"
+				"FungibleToken",
+				"NonFungibleToken",
+				"MetadataViews",
+				"ExampleNFT"
 			]
 		},
 		"testnet": {
