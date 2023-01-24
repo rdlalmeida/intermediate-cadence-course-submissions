@@ -15,7 +15,8 @@
 		"FungibleToken": {
 			 "source": "../common_resources/contracts/FungibleToken.cdc",
 			 "aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0xf233dcee88fe0abe"
 			 }
 		},
 		"MetadataViews": {
@@ -125,6 +126,7 @@
 				"FungibleToken",
 				"NonFungibleToken",
 				"MetadataViews",
+				"ResourceTypes",
 				"ExampleNFT"
 			]
 		},
