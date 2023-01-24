@@ -25,7 +25,7 @@ transaction() {
         log("Saved a collection to ".concat(Record.CollectionStoragePath.toString()))
 
         // Link it to the public path too
-        signer.link<&Record.Collection{Record.CollectionPublic}>(Record.CollectionPublicPath, target: Record.CollectionStoragePath)
+        signer.link<&Record.Collection{Record.CollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic}>(Record.CollectionPublicPath, target: Record.CollectionStoragePath)
 
         log("Collection linked to the public path at ".concat(Record.CollectionPublicPath.toString()).concat(" for user ").concat(signer.address.toString()))
     }
