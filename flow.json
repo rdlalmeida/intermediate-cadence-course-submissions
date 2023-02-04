@@ -66,6 +66,12 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"ExampleNFTAccess": {
+			"source": "./Chapter2.0/Day1/contracts/ExampleNFTAccess.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -123,11 +129,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"FungibleToken",
 				"NonFungibleToken",
-				"MetadataViews",
-				"ResourceTypes",
-				"ExampleNFT"
+				"ExampleNFTAccess"
 			]
 		},
 		"testnet": {
