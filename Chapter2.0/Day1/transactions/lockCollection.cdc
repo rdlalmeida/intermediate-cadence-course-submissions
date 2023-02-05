@@ -23,10 +23,21 @@ transaction(user: Address) {
         log("Response: ".concat(message))
 
         // Cool, all works. Locking the collection now
+        log("Locking collection...")
+        self.admin.lockUserCollection(collection: self.userCollection)
 
-        //Use the local variables to lock and unlock the user's Collection
+        // Lets checked. Lets withdraw the same NFT again
+        log("Step 2: The collection is now locked. Trying to withdraw a NFT from a locked collection...")
+        message = self.userCollection.withdraw(withdrawID: 1)
+        log("Response: ".concat(message))
 
-        
+        // Awesome. Unlock the damn thing again and withdraw the NFT again just to be sure
+        log("Unlocking collection...")
+        self.admin.unlockUserCollection(collection: self.userCollection)
+
+        log("Step 3: Collection unlocked again. Lets withdraw the damn NFT again.")
+        message = self.userCollection.withdraw(withdrawID: 1)
+        log("Response: ".concat(message))        
     }
 
 }

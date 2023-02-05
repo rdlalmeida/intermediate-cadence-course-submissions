@@ -69,9 +69,16 @@ pub contract ExampleNFTAccess {
     }
 
     pub resource Admin {
-        pub fun lockedUserCollection(collection: &Collection{CollectionPublic}) {
+        // Simple function to lock a user's collection
+        pub fun lockUserCollection(collection: &Collection{CollectionPublic}) {
             collection.lock()
         }
+
+        // Same but to unlock
+        pub fun unlockUserCollection(collection: &Collection{CollectionPublic}) {
+            collection.unlock()
+        }
+
     }
 
     pub fun createEmptyCollection(collectionName: String): @Collection {
