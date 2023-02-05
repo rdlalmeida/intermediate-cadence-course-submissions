@@ -37,7 +37,15 @@ transaction(user: Address) {
 
         log("Step 3: Collection unlocked again. Lets withdraw the damn NFT again.")
         message = self.userCollection.withdraw(withdrawID: 1)
-        log("Response: ".concat(message))        
+        log("Response: ".concat(message))
+
+        /*
+            Lets say that a random user that has created a collection tries to be smart and writes a transaction to lock and unlock his own collection
+            He shouldn't be able to do this because only the contract deployer can do this because:
+            1. Any other user cannot access an Admin resource, because the contract does not expose any createAdmin function, therefore these cannot be created
+            outside of the contract, i.e., only the contract deplyer can access the Admin resource that is created when the contract initializes!
+            2. The lock and unlock functions are protected from usage from users other than the contract deployer through the access(contract) identifier
+        */
     }
 
 }

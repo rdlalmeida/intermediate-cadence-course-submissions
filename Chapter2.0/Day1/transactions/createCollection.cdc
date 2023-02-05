@@ -1,11 +1,11 @@
 import ExampleNFTAccess from "../contracts/ExampleNFTAccess.cdc"
 
 transaction(collectionName: String) {
-    let admin: &ExampleNFTAccess.Admin
-
     prepare(signer: AuthAccount) {
-        // Borrow the Admin resource from storage
-        self.admin = signer.borrow<&ExampleNFTAccess.Admin>(from: ExampleNFTAccess.AdminStorage)!
+
+        signer.unlink(ExampleNFTAccess.collectionPublicStorage)
+        let randomCollection: @AnyResource <- signer.load<@AnyResource>(from: ExampleNFTAccess.collectionStorage)
+        destroy randomCollection
 
         // Create and save a new Collection to the user's account
         let newCollection: @ExampleNFTAccess.Collection{ExampleNFTAccess.CollectionPublic} <- ExampleNFTAccess.createEmptyCollection(collectionName: collectionName)

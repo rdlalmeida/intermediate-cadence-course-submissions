@@ -34,9 +34,9 @@ pub contract ExampleNFTAccess {
         pub var ownedNFTs: @{UInt64: NFT}
 
         pub fun withdraw(withdrawID: UInt64): String {
-            pre {
-                !self.locked: "Collection ".concat(self.collectionName).concat("is locked! You cannot withdraw NFTs.")
-            }
+            // pre {
+            //     !self.locked: "Collection ".concat(self.collectionName).concat("is locked! You cannot withdraw NFTs.")
+            // }
 
             // let nft: @NFT <- self.ownedNFTs.remove(key: withdrawID)
             //     ?? panic("This NFT doesn't exist in this collection")
@@ -44,7 +44,13 @@ pub contract ExampleNFTAccess {
             // return <- nft
 
             // Return this String just to indicate that the function works (No need to return a NFT for this case)
-            return "NFT with id ".concat(withdrawID.toString()).concat("is withdrawble! That means the collection is not locked! Cool!")
+            
+            // This is a bastardization of the withdraw function just for testing purposes
+            if (self.locked) {
+                return "Collection ".concat(self.collectionName).concat(" is locked! No NFTs for you ah ah ah ah !!")
+            }
+
+            return "NFT with id ".concat(withdrawID.toString()).concat("is withdrawble! That means the collection ".concat(self.collectionName).concat(" is not locked! Cool!"))
         }
 
         access(contract) fun lock() {
@@ -89,6 +95,9 @@ pub contract ExampleNFTAccess {
         self.AdminStorage = /storage/Admin
         self.collectionStorage = /storage/myCollection
         self.collectionPublicStorage = /public/myPublicCollection
+
+        let randomAdmin: @AnyResource <- self.account.load<@AnyResource>(from: self.AdminStorage)
+        destroy randomAdmin
 
         // Create and store an Admin resource, which is only accessible by the contract deployer
         let admin: @Admin <- create Admin()
