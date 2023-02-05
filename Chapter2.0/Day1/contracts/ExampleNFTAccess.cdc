@@ -105,3 +105,4 @@ pub contract ExampleNFTAccess {
         self.account.save(<- admin, to: self.AdminStorage)
     }
 }
+ 
