@@ -72,6 +72,30 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"StandardSword": {
+			"source": "./Chapter2.0/Day2/contracts/StandardNFTInterface/StandardSword.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"StandardShield": {
+			"source": "./Chapter2.0/Day2/contracts/StandardNFTInterface/StandardShield.cdc",
+			"aliases": {
+				"emulator":"0xf8d6e0586b0a20c7"
+			}
+		},
+		"StandardBow": {
+			"source": "./Chapter2.0/Day2/contracts/StandardNFTInterface/StandardBow.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"StandardAdmin": {
+			"source": "./Chapter2.0/Day2/contracts/StandardNFTInterface/StandardAdmin.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -130,7 +154,10 @@
 		"emulator": {
 			"emulator-account": [
 				"NonFungibleToken",
-				"ExampleNFTAccess"
+				"StandardShield",
+				"StandardSword",
+				"StandardBow",
+				"StandardAdmin"
 			]
 		},
 		"testnet": {
