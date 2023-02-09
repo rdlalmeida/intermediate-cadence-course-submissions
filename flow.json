@@ -12,6 +12,18 @@
 				"emulator": "0xf8d6e0586b0a20c7"
 			 }
 		},
+		"NonFungibleTokenSimple": {
+			"source": "../common_resources/contracts/NonFungibleTokenSimple.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"NonFungibleTokenCollection": {
+			"source": "../common_resources/contracts/NonFungibleTokenCollection.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
 		"FungibleToken": {
 			 "source": "../common_resources/contracts/FungibleToken.cdc",
 			 "aliases": {
@@ -96,6 +108,30 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"MyBow": {
+			"source": "./Chapter2.0/Day2/contracts/MyNewNFTInterface/MyBow.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"MyShield": {
+			"source": "./Chapter2.0/Day2/contracts/MyNewNFTInterface/MyShield.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"MySword": {
+			"source": "./Chapter2.0/Day2/contracts/MyNewNFTInterface/MySword.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"MyAdmin": {
+			"source": "./Chapter2.0/Day2/contracts/MyNewNFTInterface/MyAdmin.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -159,11 +195,16 @@
 		"emulator": {
 			"emulator-account": [
 				"NonFungibleToken",
+				"NonFungibleTokenSimple",
+				"NonFungibleTokenCollection",
 				"StandardShield",
 				"StandardSword",
 				"StandardBow",
 				"StandardAdmin",
-				"Record"
+				"MyBow",
+				"MyShield",
+				"MySword",
+				"MyAdmin"
 			]
 		},
 		"testnet": {

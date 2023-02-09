@@ -8,10 +8,11 @@ transaction() {
 
         let collection: @StandardSword.Collection <- StandardSword.createEmptyCollection()
         signer.save(<- collection, to: StandardSword.collectionStorage)
-        signer.link<&StandardSword.Collection>(StandardSword.collectionPublic, target: StandardSword.collectionStorage)
+        signer.link<&StandardSword.Collection{StandardSword.CollectionPublic}>(StandardSword.collectionPublic, target: StandardSword.collectionStorage)
     }
 
     execute {
 
     }
 }
+ 

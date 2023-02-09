@@ -10,6 +10,9 @@ pub fun main(collectionAddress: Address) {
     // Here's why this approach required a shit ton of code just to check the total set of NFTs. Because I have three different Collection of three different types, 
     // which makes it impossible to do this check in a single cycle. Just like with the NFT creation, I need to repeat the same logic for evey type. Hopefully, 
     // my agnostic alternative solves this...
+    // Also, the fact that I'm getting the collection references in different ways (sometimes I explicit the CollectionPublic, sometimes I don't), as well as
+    // the variables used to store the NFT references (I've used vars and let interchangibly) is on purpose. I'm trying to see what works and don't in this
+    // context.
     let swordCollectionReference: &StandardSword.Collection{StandardSword.CollectionPublic} 
         = collectionAccount.getCapability<&StandardSword.Collection{StandardSword.CollectionPublic}>(StandardSword.collectionPublic).borrow() ??
             panic("Account ".concat(collectionAddress.toString()).concat(" does not have a proper Sword Collection configured yet!"))
