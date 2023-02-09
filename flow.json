@@ -110,24 +110,29 @@
 			"__publickey__": "5a6a7bdb81838e40fc615d4c0eed3d4caacfc7f47a89d319caa370aac6196113573738ba57e09ea5a27a192d48457ee5c0e32011bc10ef93383aabad24a9ce2a"
 		},
 		"account01": {
-			"address": "0x01cf0e2f2f715450",
-			"key": "2df342adc4f8fc5a2c91c6759c766096b2afe3660a861d4b83f815b7d3e06b27",
-			"__publickey__": "0d766679eb92f783566331af50cccf8e6c39f4a35c89d8dd957185adf02338975e38a44a9caaeccd2b5cdb686a64513d86d38bcb97ddab180a3404f8aa5dde09"
+			"address": "0xe03daebed8ca0615",
+			"key": "24131830f069dfb1eb0832bea830807dde1b98f0533119693bd94d9ed0cda286",
+			"__publickey__": "8e69871f04fdefd7932b606cde4b30b51398cca91b2c409ffd1f6f911de52cddecba67c759207a97581b5a1882a442124c69d773bf0e828f4d03a1860425cf39"
 		},
 		"account02": {
-			"address": "0x179b6b1cb6755e31",
-			"key": "69f067810cb6858662126df375e9f9a249e8441abeaeadde837335f82659b5d4",
-			"__publickey__": "6fbd9bad2b2b75c4bc2ee2bc09b211308770964ed2e07dc2cf690253315d948d9d9281e3a3c150c543b9f21138782810fc7c9d4755c8bc7416c03588be50935d"
+			"address": "0x045a1763c93006ca",
+			"key": "839bea9c1bbbd9893192e774cb04dd39cacf008264886e2336df87840618a7b4",
+			"__publickey__": "aa9006b45921d7a7811207bc904c87a2c98cd90bcc393917a0f7515779b070984ac51dbf334589fdcc133700cc85a0665a314258cb81e8e03d285dda10acfa62"
 		},
 		"account03": {
-			"address": "0xf3fcd2c1a78f5eee",
-			"key": "61d9ac65e0a1fc9295b1fa377977e04ab02a616ec313d057d276d3e259fa44c2",
-			"__publickey__": "d1f588984e4a80e686291b6d6c4bb44c6716bb3320d37cc4534178d8ebd302089cdf7e0eff2a927d0093994164c49b5c9b7ef44992f74465febb170fd0ecc071"
+			"address": "0x120e725050340cab",
+			"key": "059ab1881bf258241aae485bb509c6f62e25bf8d032790cd6b7586ffe8359c93",
+			"__publickey__": "4028b95aeabeb7572d052fe2294cbc9f50632234ed5f8b4dee7101474f1ef5b373cb7c3ada9c1f5404f73f155656f08eb6f17c20452cb465715d8bbb30ca2f9d"
 		},
 		"account04": {
-			"address": "0xe03daebed8ca0615",
-			"key": "6e0e03c1e7cd08d15d8b10bc000ec8a15a3b7031526053e99e37eda9713d0320",
-			"__publickey__": "33751438b6125254679649a8fd2e0ddb8657185628dd55e7bd3005061631e24be1cd0f7b5713b6d0dc4d79343a826349f35a8c7a5467e6e67a382c3cc9cf188f"
+			"address": "0xf669cb8d41ce0c74",
+			"key": "b9b120a2cc035e5f8e42ca633df5091c9660b0e24d0336cc60ff57a635a7a12e",
+			"__publickey__": "722d1025378f9ea86fbd563432281354b95dbd9b7ae57da56b3abed84a61a1ffea2a6137644907dc587210d9027842c1d34b6ffbc76c7b855ff03cccf1a0d056"
+		},
+		"account05": {
+			"address": "0x192440c99cb17282",
+			"key": "ef726b3d24265e90ee59430af5bbef73132d2680ea3455441d67bf02005c762e",
+			"__publickey__": "25f32079cce55d96ff40471ef693b5248be585c0efa92e12b04c6eafa4c15df6bba9ead416e5bba5aa364f963435e42451f958d2b9c4f34f3be16c99ba9e26ad"
 		},
 		"testnet-account": {
                         "address": "0xb7fb1e0ae6485cf6",
@@ -157,7 +162,8 @@
 				"StandardShield",
 				"StandardSword",
 				"StandardBow",
-				"StandardAdmin"
+				"StandardAdmin",
+				"Record"
 			]
 		},
 		"testnet": {
@@ -166,3 +172,4 @@
 		}
 	}
 }
+ 

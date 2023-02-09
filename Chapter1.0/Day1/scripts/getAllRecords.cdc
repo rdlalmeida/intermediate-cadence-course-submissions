@@ -24,3 +24,4 @@ pub fun main(userAddress: Address): [&Record.NFT?] {
 
     return recordResults
 }
+ 

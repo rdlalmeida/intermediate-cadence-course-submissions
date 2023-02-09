@@ -102,7 +102,7 @@ pub contract Record: NonFungibleToken {
         self.MinterStoragePath = /storage/Minter
 
         // Retrieve any old minters from the storage path
-        let oldMinter: @Record.Minter <- self.account.load<@Record.Minter>(from: self.MinterStoragePath)!
+        let oldMinter: @AnyResource <- self.account.load<@AnyResource>(from: self.MinterStoragePath)
         // And destroy it to clear the storage path
         destroy oldMinter
 
