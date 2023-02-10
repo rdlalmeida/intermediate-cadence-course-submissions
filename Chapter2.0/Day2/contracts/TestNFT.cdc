@@ -1,17 +1,16 @@
-import NonFungibleToken from "../../../../../common_resources/contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
 
-pub contract StandardBow: NonFungibleToken {
-    pub var totalSupply: UInt64    
+pub contract TestNFT: NonFungibleToken {
+    pub var totalSupply: UInt64
     pub event ContractInitialized()
-
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event MintBowNFT(id: UInt64)
+    pub event MintTestNFT(id: UInt64)
 
     pub let collectionStorage: StoragePath
     pub let collectionPublic: PublicPath
 
-    pub event BowCollectionCreated()
+    pub event CollectionCreated()
 
     pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
@@ -19,7 +18,7 @@ pub contract StandardBow: NonFungibleToken {
 
         init() {
             self.id = self.uuid
-            self.type = "Bow"
+            self.type = self.getType().identifier
         }
     }
 
@@ -27,10 +26,10 @@ pub contract StandardBow: NonFungibleToken {
         pub fun deposit(token: @NonFungibleToken.NFT)
         pub fun getIDs(): [UInt64]
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
-        pub fun borrowBowNFT(id: UInt64): &StandardBow.NFT? {
+        pub fun borrowTestNFT(id: UInt64): &TestNFT.NFT? {
             post {
                 (result == nil) || (result?.id == id):
-                    "Cannot borrow the reference: The ID of the returned Bow reference is incorrect"
+                    "Cannot borrow the reference: The ID of the returned TestNFT reference is incorrect"
             }
         }
     }
@@ -48,23 +47,24 @@ pub contract StandardBow: NonFungibleToken {
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
             let nftToRemove: @NonFungibleToken.NFT <- self.ownedNFTs.remove(key: withdrawID) ??
-                panic("NFT with id ".concat(withdrawID.toString()).concat(" does not exist in the collection!"))
+                panic("NFT with id ".concat(withdrawID.toString()).concat(" does not exists in the Collection!"))
 
-                return <- nftToRemove
+            return <- nftToRemove
         }
 
+        // Play around with this one to see if I can enforce/relax types
         pub fun deposit(token: @NonFungibleToken.NFT) {
-            let token: @StandardBow.NFT <- token as! @StandardBow.NFT
+            // Lets try the "normal" version first
+            let token: @TestNFT.NFT <- token as! @TestNFT.NFT
             emit Deposit(id: token.id, to: self.owner!.address)
             self.ownedNFTs[token.id] <-! token
         }
 
-        pub fun borrowBowNFT(id: UInt64): &StandardBow.NFT? {
+        pub fun borrowTestNFT(id: UInt64): &TestNFT.NFT? {
             if (self.ownedNFTs[id] != nil) {
                 let ref: auth &NonFungibleToken.NFT = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
 
-                // Up cast the reference and return it
-                return (ref as! &StandardBow.NFT)
+                return (ref as! &TestNFT.NFT)
             }
 
             return nil
@@ -79,23 +79,23 @@ pub contract StandardBow: NonFungibleToken {
         }
     }
 
-    // Use this function to create a Bow NFT
-    access(account) fun createBow(): @NFT {
-        let bowNFT: @NFT <- create NFT()
-        emit MintBowNFT(id: bowNFT.id)
-        return <- bowNFT
-    }
-
     pub fun createEmptyCollection(): @Collection {
         let collection: @Collection <- create Collection()
-        emit BowCollectionCreated()
+        emit CollectionCreated()
         return <- collection
+    }
+
+    access(account) fun createTestNFT(): @NFT {
+        let testNFT: @NFT <- create NFT()
+        emit MintTestNFT(id: testNFT.id)
+        return <- testNFT
     }
 
     init() {
         self.totalSupply = 0
-        self.collectionStorage = /storage/standardBowStorage
-        self.collectionPublic = /public/standardBowStorage
+        self.collectionStorage = /storage/testCollection
+        self.collectionPublic = /public/testCollection
+
         emit ContractInitialized()
     }
 }

@@ -132,6 +132,18 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"TestNFT": {
+			"source": "./Chapter2.0/Day2/contracts/TestNFT.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"TestAdmin": {
+			"source": "./Chapter2.0/Day2/contracts/TestAdmin.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -204,7 +216,9 @@
 				"MyBow",
 				"MyShield",
 				"MySword",
-				"MyAdmin"
+				"MyAdmin",
+				"TestNFT",
+				"TestAdmin"
 			]
 		},
 		"testnet": {

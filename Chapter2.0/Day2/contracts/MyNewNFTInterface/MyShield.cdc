@@ -18,3 +18,4 @@ pub contract MyShield: NonFungibleTokenSimple {
         return <- create NFT()
     }
 }
+ 
