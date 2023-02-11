@@ -34,8 +34,8 @@ SCRIPT1_ARGS="0xe03daebed8ca0615"
 run_script1="flow scripts execute $SCRIPT1_PATH $SCRIPT1_ARGS --network $NETWORK"
 
 # Run stuff here:
-# echo "Running ${deploy_contract}"
-# eval $deploy_contract
+echo "Running ${deploy_contract}"
+eval $deploy_contract
 
 echo "Running ${run_transaction1}"
 eval $run_transaction1
@@ -45,3 +45,4 @@ eval $run_transaction2
 
 echo "Running ${run_script1}"
 eval $run_script1
+ 

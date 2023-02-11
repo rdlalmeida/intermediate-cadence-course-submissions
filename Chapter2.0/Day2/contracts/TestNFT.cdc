@@ -55,7 +55,8 @@ pub contract TestNFT: NonFungibleToken {
         // Play around with this one to see if I can enforce/relax types
         pub fun deposit(token: @NonFungibleToken.NFT) {
             // Lets try the "normal" version first
-            let token: @TestNFT.NFT <- token as! @TestNFT.NFT
+            // let token: @TestNFT.NFT <- token as! @TestNFT.NFT
+            let token: @NonFungibleToken.NFT <- token
             emit Deposit(id: token.id, to: self.owner!.address)
             self.ownedNFTs[token.id] <-! token
         }
@@ -63,8 +64,33 @@ pub contract TestNFT: NonFungibleToken {
         pub fun borrowTestNFT(id: UInt64): &TestNFT.NFT? {
             if (self.ownedNFTs[id] != nil) {
                 let ref: auth &NonFungibleToken.NFT = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
+                // let ref: &NonFungibleToken.NFT = (&self.ownedNFTs[id] as &NonFungibleToken.NFT?)!
 
-                return (ref as! &TestNFT.NFT)
+                log("borrowTestNFT: Ref type before downcast: ".concat(ref.getType().identifier))
+
+                // return (ref as! &TestNFT.NFT)
+
+                let downcastRef: &TestNFT.NFT = ref as! &TestNFT.NFT
+
+                log("borrowTestNFT: downcastRef type is now: ".concat(downcastRef.getType().identifier))
+
+                return downcastRef
+
+                /*
+                    This is the output of the sequence of logs above, when I mint a @TestNFT.NFT, deposit it, still as @TestNFT.NFT,
+                    using the deposit function in the format as in this file, i.e., as a NonFungibleToken.NFT and not explicitely as
+                    @TokenNFT.NFT, and then borrow it with this function:
+
+                    DEBU[12810] LOG [a7bafc] "borrowTestNFT: Ref type before downcast: A.f8d6e0586b0a20c7.TestNFT.NFT" 
+                    DEBU[12810] LOG [a7bafc] "borrowTestNFT: downcastRef type is now: A.f8d6e0586b0a20c7.TestNFT.NFT"
+
+                    The lesson here: even if I deposit the token as an assumed general type NonFungibleToken.NFT, internally
+                    it is indeed a TestNFT.NFT in any case! Yes, if I downcast it on deposit it is technically more correct, I
+                    guess, but this means that I can store multiple NFT types (to an extent) in a single Collection if I don't do
+                    this, as longa s I write a dedicated borrow function for each. This means also that when I create a Collection, 
+                    it has to be prepared to receive a specific set of types before hand, denoted by the set of different borrow functions.
+                    My theory was right after all!
+                */
             }
 
             return nil

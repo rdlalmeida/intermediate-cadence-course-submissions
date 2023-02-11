@@ -24,7 +24,7 @@ pub contract MyAdmin {
             return <- shield
         }
 
-        pub fun minSword(): @MySword.NFT {
+        pub fun mintSword(): @MySword.NFT {
             let sword: @MySword.NFT <- MySword.createSword()
             emit MySwordCreated()
             return <- sword

@@ -17,5 +17,15 @@ pub fun main(collectionAddress: Address) {
                 ?? panic("Unable to get a Test NFT reference with id ".concat(testNFTID.toString()))
 
             log("NFT id = ".concat(testNFTRef?.id!.toString()).concat(", of type = ").concat(testNFTRef?.type!))
+
+            // Check out the type of the NFT Reference returned
+            log("This NFT has type = ".concat(testNFTRef.getType().identifier))
         }
+
+        let someType: Type = Type<@TestNFT.NFT>()
+
+        log("Some type = ".concat(someType.identifier))
+
+        
 }
+ 

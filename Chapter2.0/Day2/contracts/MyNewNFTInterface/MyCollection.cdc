@@ -15,7 +15,7 @@ pub contract MyCollection: NonFungibleTokenCollection {
     pub event MintMyNFT(id: String)
 
     pub let myCollectionStorage: StoragePath
-    pub let myCollectionPrivate: PrivatePath
+    pub let myCollectionPublic: PublicPath
 
     // Use this interface to add custom functions tailored to this context, or limit the usage of others
     // In this particular case, because I want to store Bow, Shield and Sword NFTs in the same collection, I'm going to add three specific borrow functions,
@@ -24,9 +24,9 @@ pub contract MyCollection: NonFungibleTokenCollection {
         pub fun deposit(token: @NonFungibleTokenSimple.NFT)
         pub fun getIDs(): [String]
         pub fun borrowNFT(id: String): &NonFungibleTokenSimple.NFT
-        // pub fun borrowBowNFT(id: String): &MyBow.NFT
-        // pub fun borrowShieldNFT(id: String): &MyShield.NFT
-        // pub fun borrowSwordNFT(id: String): &MySword.NFT
+        pub fun borrowBowNFT(id: String): &MyBow.NFT
+        pub fun borrowShieldNFT(id: String): &MyShield.NFT
+        pub fun borrowSwordNFT(id: String): &MySword.NFT
     }
 
     // Now the main Collection
@@ -40,27 +40,63 @@ pub contract MyCollection: NonFungibleTokenCollection {
         // I antecipate that most of my problems are going to be coming for this deposit function, so go ahead and write it at the top
         // Unlike the other Collections, this one cannot downcast the received NFT, i.e., tokens, by default, are stored as NonFungibleTokenSimple.NFT
         pub fun deposit(token: @NonFungibleTokenSimple.NFT) {
+            // First, every toke,regardless of the type, is stored as a NonFungibleTokenSimple.NFT type. I've tested it and this do not removes the
+            // underlying, more specific type
+            let token: @NonFungibleTokenSimple.NFT <- token
             emit Deposit(id: token.id, to: self.owner!.address)
             self.ownedNFTs[token.id] <-! token
         }
 
-        // // Next, the specific borrow functions
-        // pub fun borrowBowNFT(id: String): &MyBow.NFT {
-        //     // Check first if anything is in that storage spot
-        //     let tokenRef: &NonFungibleTokenSimple.NFT? = &self.ownedNFTs[id] as &NonFungibleTokenSimple.NFT?
-        //     if (tokenRef == nil) {
-        //         panic("The Collection does not have any NFT with id ".concat(id))
-        //     }
+        // Next, the specific borrow functions
+        pub fun borrowBowNFT(id: String): &MyBow.NFT {
+            // Check first if anything is in that storage spot
+            let tokenOptionalRef: auth &NonFungibleTokenSimple.NFT? = &self.ownedNFTs[id] as auth &NonFungibleTokenSimple.NFT?
+            if (tokenOptionalRef == nil) {
+                panic("The Collection does not have any Bow NFT with id ".concat(id))
+            }
 
-        //     // Check if the id is compatible with the NFT to return. The isInstace function should be perfect for this
-        //     if (!tokenRef!.isInstace(Type<MyBow.NFT>())) {
-        //         panic("The token with id ".concat(id).concat(" is not of the required type: Type<MyBow.NFT>()"))
-        //     }
+            // Now that I know that there's something there, remove the optional
+            let tokenRef: auth &NonFungibleTokenSimple.NFT = tokenOptionalRef!
 
-        //     // Seems that everything is in order if the code gets to this point. Downcast and return the reference
-        //     return tokenRef as! &MyBow.NFT
-            
-        // }
+            // Check if the id is compatible with the NFT to return. The isInstance function should be perfect for this
+            if (!tokenRef.isInstance(Type<&MyBow.NFT>())) {
+                panic("The token with id ".concat(id).concat(" is not of the required type: ").concat(Type<&MyBow.NFT>().identifier))
+            }
+
+            // Seems that everything is in order if the code gets to this point. Downcast and return the reference
+            return tokenRef as! &MyBow.NFT
+        }
+
+        // Rinse and repeat for the remaining NFT types
+        pub fun borrowShieldNFT(id: String): &MyShield.NFT {
+            let tokenOptionalRef: auth &NonFungibleTokenSimple.NFT? = &self.ownedNFTs[id] as auth &NonFungibleTokenSimple.NFT?
+            if (tokenOptionalRef == nil) {
+                panic("The Collection does not have any Shield NFT with id ".concat(id))
+            }
+
+            let tokenRef: auth &NonFungibleTokenSimple.NFT = tokenOptionalRef!
+
+            if (!tokenRef.isInstance(Type<&MyShield.NFT>())) {
+                panic("The token with id ".concat(id).concat(" is not of the required type: ").concat(Type<&MyShield.NFT>().identifier))
+            }
+
+            return tokenRef as! &MyShield.NFT
+        }
+
+        pub fun borrowSwordNFT(id: String): &MySword.NFT {
+            let tokenOptionalRef: auth &NonFungibleTokenSimple.NFT? = &self.ownedNFTs[id] as auth &NonFungibleTokenSimple.NFT?
+            if (tokenOptionalRef == nil) {
+                panic("The Collection does not have any Sword NFT with id ".concat(id))
+            }
+
+            let tokenRef: auth &NonFungibleTokenSimple.NFT = tokenOptionalRef!
+
+            if (!tokenRef.isInstance(Type<&MyShield.NFT>())) {
+                panic("The token with id ".concat(id).concat(" is not of the required type: ").concat(Type<&MySword.NFT>().identifier))
+            }
+
+            return tokenRef as! &MySword.NFT
+        }
 
         pub fun withdraw(withdrawID: String): @NonFungibleTokenSimple.NFT {
             let token: @NonFungibleTokenSimple.NFT <- self.ownedNFTs.remove(key: withdrawID) ??
@@ -91,8 +127,9 @@ pub contract MyCollection: NonFungibleTokenCollection {
     init() {
         self.totalSupply = 0
         self.myCollectionStorage = /storage/myCollection
-        self.myCollectionPrivate = /private/myCollection
+        self.myCollectionPublic = /public/myCollection
 
         emit ContractInitialized()
     }
 }
+ 

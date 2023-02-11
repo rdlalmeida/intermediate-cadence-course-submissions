@@ -133,6 +133,12 @@
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
 		},
+		"MyCollection": {
+			"source": "./Chapter2.0/Day2/contracts/MyNewNFTInterface/MyCollection.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
 		"TestNFT": {
 			"source": "./Chapter2.0/Day2/contracts/TestNFT.cdc",
 			"aliases": {
@@ -217,8 +223,7 @@
 				"MyShield",
 				"MySword",
 				"MyAdmin",
-				"TestNFT",
-				"TestAdmin"
+				"MyCollection"
 			]
 		},
 		"testnet": {
