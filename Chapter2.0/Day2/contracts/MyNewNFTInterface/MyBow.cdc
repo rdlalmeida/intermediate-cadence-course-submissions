@@ -3,6 +3,7 @@ import NonFungibleTokenSimple from "../../../../../common_resources/contracts/No
 pub contract MyBow: NonFungibleTokenSimple {
     pub resource NFT: NonFungibleTokenSimple.INFT {
         pub let id: String
+        pub let name: String
 
         pub fun createID(): String {
             // As expected, for these kinds of NFTs, the id String is going to be a concatenation of the contract type, which is also the NFT type,
@@ -12,7 +13,9 @@ pub contract MyBow: NonFungibleTokenSimple {
 
         init() {
             // The NFT is is now obtained with the createID function created above.
+            self.name = "Bow"
             self.id = self.createID()
+            
         }
     }
 

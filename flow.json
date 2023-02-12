@@ -212,13 +212,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"NonFungibleToken",
 				"NonFungibleTokenSimple",
 				"NonFungibleTokenCollection",
-				"StandardShield",
-				"StandardSword",
-				"StandardBow",
-				"StandardAdmin",
 				"MyBow",
 				"MyShield",
 				"MySword",
