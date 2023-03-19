@@ -150,6 +150,18 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"IPizza": {
+			"source": "./Chapter2.0/Day3/contracts/IPizza.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"Pizza": {
+			"source": "./Chapter2.0/Day3/contracts/Pizza.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -212,13 +224,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"NonFungibleTokenSimple",
-				"NonFungibleTokenCollection",
-				"MyBow",
-				"MyShield",
-				"MySword",
-				"MyAdmin",
-				"MyCollection"
+				"IPizza",
+				"Pizza"
 			]
 		},
 		"testnet": {

@@ -84,7 +84,7 @@ pub contract MyCollection: NonFungibleTokenCollection {
                     }
                 }
                 else {
-                    // In this case, the tokenType dictonary entry exists but does not have the provided tokenID.
+                    // In this case, the tokenType dictionary entry exists but does not have the provided tokenID.
                     // Emit the corresponding event and move on
                     emit InexistentTokenID(tokenType: tokenType, tokenID: tokenId)
                 }
@@ -106,7 +106,7 @@ pub contract MyCollection: NonFungibleTokenCollection {
             return self.ownedNFTs.keys
         }
 
-        // I antecipate that most of my problems are going to be coming for this deposit function, so go ahead and write it at the top
+        // I anticipate that most of my problems are going to be coming for this deposit function, so go ahead and write it at the top
         // Unlike the other Collections, this one cannot downcast the received NFT, i.e., tokens, by default, are stored as NonFungibleTokenSimple.NFT
         pub fun deposit(token: @NonFungibleTokenSimple.NFT) {
             // Start by adding the new type to the tokenTypeCount
