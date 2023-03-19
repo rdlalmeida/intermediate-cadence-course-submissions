@@ -80,4 +80,31 @@ pub fun main(): Void {
 
 Result:
 
+![image](https://user-images.githubusercontent.com/39467168/226147871-51e84032-5305-4e25-8a2c-c1eb6c73f465.png)
+
 3. In a transaction, attempt to call the mutate function inside the contract without importing it.
+
+* Changing transaction: addTopping.cdc
+
+```cadence
+import IPizza from "../contracts/IPizza.cdc"
+
+transaction(newTopping: String){
+
+    let borrowedContract: &IPizza
+    prepare(signer: AuthAccount) {
+        // I already have the account in the signer parameter. Borrow the contract
+        let contractName: String = "Pizza"
+        self.borrowedContract = signer.contracts.borrow<&IPizza>(name: contractName) ??
+            panic("Cannot borrow ".concat(contractName).concat(" contract!"))
+    }
+
+    execute {
+        self.borrowedContract.addTopping(ingredient: newTopping)
+    }
+}
+```
+
+Added Oregano to that pizza:
+
+![image](https://user-images.githubusercontent.com/39467168/226148173-c7a6b0f5-4eb8-48c4-b872-2a44e82cd0a4.png)
