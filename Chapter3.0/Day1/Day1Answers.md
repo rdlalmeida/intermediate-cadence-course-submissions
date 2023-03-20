@@ -9,6 +9,8 @@
 * a capability to your public Capability<&FlowToken.Vault{FungibleToken.Receiver}>
 
 This one took a while, with all the contract importing and figuring out how to get the references to the Collection, but here it is:
+(Just a side note: I actually had to use the concepts from the next day, i.e., Chp3, Day2, to be able to complete this one. Grabbing a reference to the FLOAT Collection was failing at first, because I was only getting a Capability to FLOAT.Collection - no interfaces included. Since I didn't have access to the transaction that created that collection in my account, I went and listed the PublicPaths and respective Types stored - stuff from future chapters - in order to understand which interfaces I needed to use in the borrow function.)
+
 * getMainnetData.cdc
 
 ```cadence
