@@ -18,5 +18,4 @@ pub fun main(): Void {
     for topping in borrowedPizza.getToppings() {
         log(topping)
     }
-
 }

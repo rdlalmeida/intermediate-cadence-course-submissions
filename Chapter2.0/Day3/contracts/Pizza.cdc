@@ -25,7 +25,7 @@ pub contract Pizza: IPizza {
     }
 
     init() {
-        // Initiate a simple medium size Hawaian
+        // Initiate a simple medium size Hawaian pizza
         self.size = 12
         self.toppings = ["TomatoSauce", "Cheese", "Ham", "Pineapple"]
     }

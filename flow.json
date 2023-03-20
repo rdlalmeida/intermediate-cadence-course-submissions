@@ -9,7 +9,8 @@
 		"NonFungibleToken": {
 			 "source": "../common_resources/contracts/NonFungibleToken.cdc",
 			 "aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0x1d7e57aa55817448"
 			 }
 		},
 		"NonFungibleTokenSimple": {
@@ -21,7 +22,8 @@
 		"NonFungibleTokenCollection": {
 			"source": "../common_resources/contracts/NonFungibleTokenCollection.cdc",
 			"aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0x1d7e57aa55817448"
 			}
 		},
 		"FungibleToken": {
@@ -34,7 +36,22 @@
 		"MetadataViews": {
 			"source": "../common_resources/contracts/MetadataViews.cdc",
 			"aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0x1d7e57aa55817448"
+			}
+		},
+		"FLOAT": {
+			"source": "../common_resources/contracts/FLOAT.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0x2d4c3caffbeab845"
+			}
+		},
+		"FlowToken": {
+			"source": "../common_resources/contracts/FlowToken.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7",
+				"mainnet": "0x1654653399040a61"
 			}
 		},
 		"ExampleNFT": {
@@ -201,25 +218,28 @@
 			"__publickey__": "25f32079cce55d96ff40471ef693b5248be585c0efa92e12b04c6eafa4c15df6bba9ead416e5bba5aa364f963435e42451f958d2b9c4f34f3be16c99ba9e26ad"
 		},
 		"testnet-account": {
-                        "address": "0xb7fb1e0ae6485cf6",
-                        "key" : {
-                                "type": "hex",
-                                "index": 0,
-                                "signatureAlgorithm": "ECDSA_P256",
-                                "hashAlgorithm": "SHA3_256",
-                                "privateKey": "e0366adfd77f315346d77cbf3f5f5bc55f53623ecdaa5a0c15bfa46f244aa3af"
-                        }
-                },
-                "blocto-testnet-account": {
-                        "address": "0x41e49c24e24bd19a",
-                        "key": {
-                                "type": "hex",
-                                "index": 1,
-                                "signatureAlgorithm": "ECDSA_P256",
-                                "hashAlgorithm": "SHA3_256",
-                                "privateKey": "90d183707a9c727e6c8ef230b751d4d3346611bb24ce625091678bb2aa22bbe3"
-                        }
-                }
+			"address": "0xb7fb1e0ae6485cf6",
+			"key" : {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_P256",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "e0366adfd77f315346d77cbf3f5f5bc55f53623ecdaa5a0c15bfa46f244aa3af"
+			}
+		},
+		"blocto-testnet-account": {
+			"address": "0x41e49c24e24bd19a",
+			"key": {
+				"type": "hex",
+				"index": 1,
+				"signatureAlgorithm": "ECDSA_P256",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "90d183707a9c727e6c8ef230b751d4d3346611bb24ce625091678bb2aa22bbe3"
+			}
+		},
+		"blocto-mainnet-account": {
+			"address": "0x82dd07b1bcafd968"
+		}
 	},
 	"deployments": {
 		"emulator": {

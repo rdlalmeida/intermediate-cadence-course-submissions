@@ -21,3 +21,4 @@ pub contract MySword: NonFungibleTokenSimple {
     }
 
 }
+ 
