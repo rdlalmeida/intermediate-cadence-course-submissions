@@ -1,16 +1,16 @@
-// import FLOAT from "../../../common_resources/contracts/FLOAT.cdc"
-// import TopShot from "../../../common_resources/contracts/TopShot.cdc"
-// import FlowToken from "../../../common_resources/contracts/FlowToken.cdc"
-// import FungibleToken from "../../../common_resources/contracts/FungibleToken.cdc"
-// import NonFungibleToken from "../../../common_resources/contracts/NonFungibleToken.cdc"
-// import MetadataViews from "../../../common_resources/contracts/MetadataViews.cdc"
+import FLOAT from "../../../../common_resources/contracts/FLOAT.cdc"
+import TopShot from "../../../../common_resources/contracts/TopShot.cdc"
+import FlowToken from "../../../../common_resources/contracts/FlowToken.cdc"
+import FungibleToken from "../../../../common_resources/contracts/FungibleToken.cdc"
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
+import MetadataViews from "../../../../common_resources/contracts/MetadataViews.cdc"
 
-import FLOAT from 0x2d4c3caffbeab845
-import TopShot from 0x0b2a3299cc857e29
-import FlowToken from 0x1654653399040a61
-import FungibleToken from 0xf233dcee88fe0abe
-import NonFungibleToken from 0x1d7e57aa55817448
-import MetadataViews from 0x1d7e57aa55817448
+// import FLOAT from 0x2d4c3caffbeab845
+// import TopShot from 0x0b2a3299cc857e29
+// import FlowToken from 0x1654653399040a61
+// import FungibleToken from 0xf233dcee88fe0abe
+// import NonFungibleToken from 0x1d7e57aa55817448
+// import MetadataViews from 0x1d7e57aa55817448
 
 pub fun main(): returnData {
     // My Blocto address for FLOATs and FlowTokens
@@ -100,4 +100,3 @@ pub struct returnData {
         self.flowTokenVaultReceiverCapability = flowTokenVaultRecCap
     }
 }
-
