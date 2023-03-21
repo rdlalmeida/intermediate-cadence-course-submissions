@@ -236,9 +236,6 @@
 				"hashAlgorithm": "SHA3_256",
 				"privateKey": "90d183707a9c727e6c8ef230b751d4d3346611bb24ce625091678bb2aa22bbe3"
 			}
-		},
-		"blocto-mainnet-account": {
-			"address": "0x82dd07b1bcafd968"
 		}
 	},
 	"deployments": {
