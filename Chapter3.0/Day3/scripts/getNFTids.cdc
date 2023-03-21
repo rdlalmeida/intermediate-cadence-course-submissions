@@ -1,5 +1,5 @@
-// import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
-import NonFungibleToken from 0x1d7e57aa55817448
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
+// import NonFungibleToken from 0x1d7e57aa55817448
 
 pub fun main(user: Address): {Type: [UInt64]} {
     let answer: {Type: [UInt64]} = {}
