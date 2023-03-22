@@ -24,3 +24,4 @@ pub fun main(user: Address): {PublicPath: Type} {
 
     return returnDict
 }
+ 
