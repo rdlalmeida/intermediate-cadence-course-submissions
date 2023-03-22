@@ -1,8 +1,8 @@
 /*
     Script to profile the Public Storage by producing a dictionary with the PublicPath as keys and the types stored there (as Capabilities) as values
 */
-// import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
-import NonFungibleToken from 0x1d7e57aa55817448
+import NonFungibleToken from "../../../../common_resources/contracts/NonFungibleToken.cdc"
+// import NonFungibleToken from 0x1d7e57aa55817448
 
 
 pub fun main(user: Address): {PublicPath: Type} {
