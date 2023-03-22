@@ -69,9 +69,24 @@ pub fun main(user: Address): {PublicPath: Type} {
 
 Running it yields:
 
+![image](https://user-images.githubusercontent.com/39467168/226700908-24027f2e-5b14-4b2e-8837-089985aad02b.png)
 
-A few questions will arise:
+Here repeated after formating this for easier reading:
 
-How do I know if the current iteration is an NFT collection?
+/public/PackNFTCollectionPub: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic}>>(), 
+/public/AllDayNFTCollection: Type<Capability<&A.e4cf4bdc1751c65d.AllDay.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.e4cf4bdc1751c65d.AllDay.MomentNFTCollectionPublic}>>(), 
+/public/UFC_NFTCollection: Type<Capability<&A.329feb3ab062d289.UFC_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.UFC_NFT.UFC_NFTCollectionPublic}>>(), 
+/public/NFL_NFTCollection: Type<Capability<&A.329feb3ab062d289.NFL_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.NFL_NFT.NFL_NFTCollectionPublic}>>(), 
+/public/ChainmonstersRewardCollection: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.93615d25d14fa337.ChainmonstersRewards.ChainmonstersRewardCollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection}>>(), 
+/public/MetaPandaCollection: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.7ba45bdcac17806a.AnchainUtils.ResolverCollection}>>(), 
+/public/AllDaySeasonalCollection: Type<Capability<&A.91b4cc10b2aa0e75.AllDaySeasonal.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.91b4cc10b2aa0e75.AllDaySeasonal.AllDaySeasonalCollectionPublic}>>(), 
+/public/FLOATCollectionPublicPath: Type<Capability<&A.2d4c3caffbeab845.FLOAT.Collection{A.1d7e57aa55817448.NonFungibleToken.Receiver,A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.2d4c3caffbeab845.FLOAT.CollectionPublic}>>()
+
+* How do I know if the current iteration is an NFT collection?
+
+Apparently, every developer has created his/her own flavour of Collection instance and connected it to the Public Storage. I was able to retrieve these, filtering out other stuff in that same Storage, by using a <code>if</code> inside the iteration function to filter for AnyResources that follow the NonFungibleToken.CollectionPublic interface. Following this interface assures me that certain functions and variables were implemented in each custom Collection created, and thus is a NFT Collection.
+
 Once I've figured that out, how do I borrow the collection from the account? (Hint: use NonFungibleToken.CollectionPublic)
+
+
 Once I do borrow it, how do I know the collection is actually a NFT collection, and not a random resource that implements NonFungibleToken.CollectionPublic?
