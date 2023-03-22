@@ -71,17 +71,6 @@ Running it yields:
 
 ![image](https://user-images.githubusercontent.com/39467168/226700908-24027f2e-5b14-4b2e-8837-089985aad02b.png)
 
-Here repeated after formating this for easier reading:
-
-/public/PackNFTCollectionPub: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic}>>(), 
-/public/AllDayNFTCollection: Type<Capability<&A.e4cf4bdc1751c65d.AllDay.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.e4cf4bdc1751c65d.AllDay.MomentNFTCollectionPublic}>>(), 
-/public/UFC_NFTCollection: Type<Capability<&A.329feb3ab062d289.UFC_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.UFC_NFT.UFC_NFTCollectionPublic}>>(), 
-/public/NFL_NFTCollection: Type<Capability<&A.329feb3ab062d289.NFL_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.NFL_NFT.NFL_NFTCollectionPublic}>>(), 
-/public/ChainmonstersRewardCollection: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.93615d25d14fa337.ChainmonstersRewards.ChainmonstersRewardCollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection}>>(), 
-/public/MetaPandaCollection: Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.7ba45bdcac17806a.AnchainUtils.ResolverCollection}>>(), 
-/public/AllDaySeasonalCollection: Type<Capability<&A.91b4cc10b2aa0e75.AllDaySeasonal.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.91b4cc10b2aa0e75.AllDaySeasonal.AllDaySeasonalCollectionPublic}>>(), 
-/public/FLOATCollectionPublicPath: Type<Capability<&A.2d4c3caffbeab845.FLOAT.Collection{A.1d7e57aa55817448.NonFungibleToken.Receiver,A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.2d4c3caffbeab845.FLOAT.CollectionPublic}>>()
-
 2a. How do I know if the current iteration is an NFT collection?
 
 Apparently, every developer has created his/her own flavour of Collection instance and connected it to the Public Storage. I was able to retrieve these, filtering out other stuff in that same Storage, by using a <code>if</code> inside the iteration function to filter for AnyResources that follow the NonFungibleToken.CollectionPublic interface. Following this interface assures me that certain functions and variables were implemented in each custom Collection created, and thus is a NFT Collection.
@@ -146,58 +135,5 @@ pub fun main(user: Address): {Type: &NonFungibleToken.NFT?} {
 * Running this with my mainnet Dapper account returns:
 
 ![image](https://user-images.githubusercontent.com/39467168/226981493-725017a1-d6c0-4499-8859-1a1310ee6761.png)
-
-Reformating this for easier reading:
-
-Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.7ba45bdcac17806a.AnchainUtils.ResolverCollection}>>(): A.f2af175e411dfff8.MetaPanda.NFT(uuid: 189541970, 
-id: 3036, 
-metadata: A.f2af175e411dfff8.MetaPanda.Metadata(clothesAccessories: "", 
-facialAccessories: "Fox mask purple hair", 
-facialExpression: "Serious", 
-headAccessories: "", 
-handAccessories: "Championship Trophy", 
-clothesBody: "MPC W Wear", 
-background: "D4", 
-foreground: "", 
-basePanda: "Pandabasic"), 
-file: A.7ba45bdcac17806a.AnchainUtils.File(extension: ".png", 
-thumbnail: A.1d7e57aa55817448.MetadataViews.IPFSFile(cid: "QmehfYrtExPtBgEDLEbX3qqW7cfWuXHedfk1ddukDZkkfA", 
-path: ""))), 
-Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic}>>(): A.e4cf4bdc1751c65d.PackNFT.NFT(uuid: 555455317, 
-id: 806797, 
-commitHash: "57e4f6e0f321097e9fa8583c29be39e28a94d8a4ebaaf2164e5803c103b0de0a", 
-issuer: 0xe4cf4bdc1751c65d), 
-Type<Capability<&A.2d4c3caffbeab845.FLOAT.Collection{A.1d7e57aa55817448.NonFungibleToken.Receiver,A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection,A.2d4c3caffbeab845.FLOAT.CollectionPublic}>>(): A.2d4c3caffbeab845.FLOAT.NFT(uuid: 587085771, 
-id: 587085771, 
-dateReceived: 1663695335.00000000, 
-eventDescription: "Claim this participation NFT to commemorate International NFT Day! \nJoin the celebration on social media by using #NFTDay.", 
-eventHost: 0x07ccd4bb872a7790, 
-eventId: 583967214, 
-eventImage: "bafkreia536gxvuwqp552g3td5cylmhw3f6557dpr6s7dutsksvamovadg4", 
-eventName: "International NFT Day 2022", 
-originalRecipient: 0x37f3f5b3e0eaf6ca, 
-serial: 42334, 
-eventsCap: Capability<&A.2d4c3caffbeab845.FLOAT.FLOATEvents{A.2d4c3caffbeab845.FLOAT.FLOATEventsPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection}>(address: 0x07ccd4bb872a7790, 
-path: /public/FLOATEventsPublicPath)), 
-Type<Capability<&A.329feb3ab062d289.NFL_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.NFL_NFT.NFL_NFTCollectionPublic}>>(): A.329feb3ab062d289.NFL_NFT.NFT(uuid: 134939960, 
-id: 787980, 
-setId: 12, 
-editionNum: 294), 
-Type<Capability<&AnyResource{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.93615d25d14fa337.ChainmonstersRewards.ChainmonstersRewardCollectionPublic,A.1d7e57aa55817448.MetadataViews.ResolverCollection}>>(): A.93615d25d14fa337.ChainmonstersRewards.NFT(uuid: 743860308, 
-id: 651957, 
-data: A.93615d25d14fa337.ChainmonstersRewards.NFTData(rewardID: 73, 
-serialNumber: 3257)), 
-Type<Capability<&A.91b4cc10b2aa0e75.AllDaySeasonal.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.91b4cc10b2aa0e75.AllDaySeasonal.AllDaySeasonalCollectionPublic}>>(): A.91b4cc10b2aa0e75.AllDaySeasonal.NFT(uuid: 447081893, 
-id: 447081893, 
-editionID: 1), 
-Type<Capability<&A.e4cf4bdc1751c65d.AllDay.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.e4cf4bdc1751c65d.AllDay.MomentNFTCollectionPublic}>>(): A.e4cf4bdc1751c65d.AllDay.NFT(uuid: 179947301, 
-id: 2458344, 
-editionID: 830, 
-serialNumber: 4815, 
-mintingDate: 1648524957.00000000), 
-Type<Capability<&A.329feb3ab062d289.UFC_NFT.Collection{A.1d7e57aa55817448.NonFungibleToken.CollectionPublic,A.329feb3ab062d289.UFC_NFT.UFC_NFTCollectionPublic}>>(): A.329feb3ab062d289.UFC_NFT.NFT(uuid: 387990195, 
-id: 1732000, 
-setId: 187, 
-editionNum: 29823)
 
 As far as I can confirm, each one of the returned entries are NonFungibleToken.NFTs, though shapped according to the projects that issued them (like FLOATs, Chainmonsters, TopShot, etc). Does this validate that these are NFT Collections? I believe so.
