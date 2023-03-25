@@ -253,7 +253,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"Contract4D1"
+				"ExampleNFT",
+				"NonFungibleToken"
 			]
 		},
 		"testnet": {

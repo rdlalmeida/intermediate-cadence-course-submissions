@@ -36,3 +36,25 @@ transaction(floatId: UInt64, recipient: Address) {
 ```
 
 2. Using the Flovatar contract, write a transaction on Mainnet that properly sets up a user's NFT Collection.
+
+In this case, since I need to save the collection to the user's Storage Path and link it afterwards, the user needs to sign the transaction and I need to do everything in the prepare phase because that's only when I have access to the AuthAccount:
+
+* createFlovatarCollection.cdc
+
+```cadence
+import NonFungibleToken from 0x1d7e57aa55817448
+import Flovatar from 0x921ea449dffec68a
+
+transaction() {
+    prepare(signer: AuthAccount) {
+        // Create and save the Flovatar Collection straight to the signer's account
+        signer.save<@NonFungibleToken.Collection>(<- Flovatar.createEmptyCollection(), to: Flovatar.CollectionStoragePath)
+
+        // And link it to the Public Storage
+        signer.link<&NonFungibleToken.Collection{Flovatar.CollectionPublic}>(Flovatar.CollectionPublicPath, target: Flovatar.CollectionStoragePath)
+    }
+
+    execute {
+    }
+}
+```
