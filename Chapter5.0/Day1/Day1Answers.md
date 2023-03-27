@@ -98,10 +98,39 @@ At the end of the deposit function, the incoming Vault needs to be destroyed sin
 
 a) Write the following transactions:
 - MINT: Mint tokens to a recipient.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/transactions/2_mintTokens.cdc
+
 - SETUP: Properly sets up a vault inside a user's account storage.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/transactions/1_setupVaultSimple.cdc
+
 - TRANSFER: Allows a user to transfer tokens to a different address.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/transactions/3_transferTokens.cdc
 
 b) Write the following scripts:
 - READ BALANCE: Reads the balance of a user's vault.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/1_getVaultBalance.cdc
+
 - SETUP CORRECTLY?: Returns `true` if the user's vault is set up correctly, and `false` if it's not.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/2_validateVault.cdc
+
 - TOTAL SUPPLY: Returns the total supply of tokens in existence.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/3_getTotalSupply.cdc
+
+## Part 3
+
+Modify your transactions/scripts from Part 2 as such:
+
+- SETUP: Ensure that this transaction first identifies if the user's vault is already set up poorly, and subsequently fix it if so. If it's not already set up, then simply set it up.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/transactions/1_setupVaultResilient.cdc
+
+- READ BALANCE:
+  - Ensure that your script work with vaults that are not set up correctly, and subsequently (temporarily) fix them so that it will always return a balance without fail.
+  - Make sure that the balance being returned is from a vault that is guaranteed to be your token's type, and not some random vault that implements the `FungibleToken` interface.
+  - Using comments in the script, explain 2 ways in which you can guarantee that the above requirement is true. One way must be using resource identifiers.
