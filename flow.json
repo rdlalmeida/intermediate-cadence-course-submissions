@@ -48,7 +48,7 @@
 			}
 		},
 		"FlowToken": {
-			"source": "../common_resources/contracts/FlowToken.cdc",
+			"source": "./Chapter5.0/Day1/contracts/FlowToken.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7",
 				"mainnet": "0x1654653399040a61"
@@ -259,6 +259,7 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
+				"FlowToken",
 				"FungibleToken",
 				"RicardoCoin"
 			]
