@@ -191,6 +191,12 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"RicardoCoin": {
+			"source": "./Chapter5.0/Day1/contracts/RicardoCoin.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -253,8 +259,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"ExampleNFT",
-				"NonFungibleToken"
+				"FungibleToken",
+				"RicardoCoin"
 			]
 		},
 		"testnet": {
