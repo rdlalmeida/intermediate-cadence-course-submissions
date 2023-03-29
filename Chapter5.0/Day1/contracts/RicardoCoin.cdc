@@ -72,7 +72,7 @@ pub contract RicardoCoin: FungibleToken {
             Withdraw
 
             This function extracts a UFix64 quantity of RicardoCoins via a temporary Vault,
-            which then can be (should) be used somewhere, namely, deposited somewhere
+            which then can be (should) be used somewhere, namely, deposited
         */
         pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
             pre {

@@ -19,7 +19,8 @@ transaction(recipient: Address) {
             panic("Account ".concat(recipient.toString()).concat(" does not have a proper Sword Collection set up yet!"))
 
         self.bowCollection = userAccount.getCapability<&StandardBow.Collection>(StandardBow.collectionPublic).borrow() ??
-            panic("Account ".concat(recipient.toString()).concat(" does not have a proper Bow Collection set up yet!"))
+            panic("Account ".concat(recip
+            ient.toString()).concat(" does not have a proper Bow Collection set up yet!"))
 
         self.shieldCollection = userAccount.getCapability<&StandardShield.Collection>(StandardShield.collectionPublic).borrow() ??
             panic("Account ".concat(recipient.toString()).concat(" does not have a proper Shield Collection set up yet!"))

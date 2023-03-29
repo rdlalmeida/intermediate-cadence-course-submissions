@@ -47,13 +47,6 @@
 				"mainnet": "0x2d4c3caffbeab845"
 			}
 		},
-		"FlowToken": {
-			"source": "./Chapter5.0/Day1/contracts/FlowToken.cdc",
-			"aliases": {
-				"emulator": "0xf8d6e0586b0a20c7",
-				"mainnet": "0x1654653399040a61"
-			}
-		},
 		"ExampleNFT": {
 			"source": "../common_resources/contracts/ExampleNFT.cdc",
 			"aliases": {
@@ -197,6 +190,24 @@
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
 			}
+		},
+		"FlowToken": {
+			"source": "./Chapter5.0/Day1/contracts/FlowToken.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"FlowToken_bad": {
+			"source": "./Chapter5.0/Day1/contracts/FlowToken_bad.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"RicardoCoinSuperAdmin": {
+			"source": "./Chapter5.0/Day1/contracts/RicardoCoinSuperAdmin.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7"
+			}
 		}
 	},
 	"networks": {
@@ -261,6 +272,7 @@
 			"emulator-account": [
 				"FlowToken",
 				"FungibleToken",
+				"RicardoCoinSuperAdmin",
 				"RicardoCoin"
 			]
 		},

@@ -51,3 +51,4 @@ pub fun main(user: Address): UFix64 {
         return vaultReference!.balance
     }
 }
+ 

@@ -134,3 +134,11 @@ https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/
   - Ensure that your script work with vaults that are not set up correctly, and subsequently (temporarily) fix them so that it will always return a balance without fail.
   - Make sure that the balance being returned is from a vault that is guaranteed to be your token's type, and not some random vault that implements the `FungibleToken` interface.
   - Using comments in the script, explain 2 ways in which you can guarantee that the above requirement is true. One way must be using resource identifiers.
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/1_getVaultBalanceResilient.cdc
+
+## Part 4
+
+a) Modify your token contract so that the Admin is allowed to withdraw tokens from a user's Vault at any time, and then in the same function, deposit them an equivalent amount of $FLOW tokens. *HINT: This will require more than simply adding a function.*
+
+b) Write a transaction (that is only signed by the Admin) that executes section a).

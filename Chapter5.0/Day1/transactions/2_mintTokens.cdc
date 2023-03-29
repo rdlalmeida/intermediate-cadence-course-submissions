@@ -30,3 +30,4 @@ transaction(recipient: Address, amount: UFix64) {
         log("Successfully deposited ".concat(amount.toString()).concat(" to account ").concat(recipient.toString()))
     }
 }
+ 
