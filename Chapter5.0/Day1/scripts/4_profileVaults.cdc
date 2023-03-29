@@ -1,6 +1,7 @@
 /*
     This script profiles the balance of both RicardoCoin, RicardoCoinSuperAdmin and FlowToken vaults for an array of input account addresses.
-    Useful to confirm if the transfer tokens function was successful
+    Useful to confirm if the transfer tokens function was successful.
+    NOTE: I could've written this script to return a custom structure, but I'm actually able to return all I need with a well structured dictionary.
 */
 
 import FlowToken from "../contracts/FlowToken.cdc"

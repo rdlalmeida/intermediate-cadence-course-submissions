@@ -141,4 +141,17 @@ https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/
 
 a) Modify your token contract so that the Admin is allowed to withdraw tokens from a user's Vault at any time, and then in the same function, deposit them an equivalent amount of $FLOW tokens. *HINT: This will require more than simply adding a function.*
 
+* Altered contract: RicardoCoinSuperAdmin.cdc
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/contracts/RicardoCoinSuperAdmin.cdc
+
 b) Write a transaction (that is only signed by the Admin) that executes section a).
+
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/transactions/6_transferTokens.cdc
+
+## Part 5
+
+a) Write a script that returns the balance of the user's $FLOW vault, and your custom vault. Make it organized so the client can easily read it.
+
+b) Write a script that neatly returns (at a minimum) the resource identifier and balance of all the (official) Fungible Token vaults that the user has in their account storage. You can be creative in whatever other information you want to return.
+ 

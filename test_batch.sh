@@ -28,7 +28,7 @@ TRANSACTION1_SIGNER=account02
 run_transaction1="flow transactions send $TRANSACTION1_PATH $TRANSACTION1_ARGS --signer $TRANSACTION1_SIGNER --network $NETWORK"
 
 # Run transaction 2
-TRANSACTION2_PATH=Chapter5.0/Day1/transactions/1_setupVault.cdc
+TRANSACTION2_PATH=Chapter5.0/Day1/transactions/1_setupVaultResilient.cdc
 TRANSACTION2_ARGS=""
 TRANSACTION2_SIGNER=account01
 
@@ -42,7 +42,7 @@ TRANSACTION3_SIGNER=emulator-account
 run_transaction3="flow transactions send $TRANSACTION3_PATH $TRANSACTION3_ARGS --signer $TRANSACTION3_SIGNER --network $NETWORK"
 
 # Run transaction 4
-TRANSACTION4_PATH=Chapter5.0/Day1/transactions/1_setupVault.cdc
+TRANSACTION4_PATH=Chapter5.0/Day1/transactions/1_setupVaultResilient.cdc
 TRANSACTION4_ARGS=""
 TRANSACTION4_SIGNER=account02
 
