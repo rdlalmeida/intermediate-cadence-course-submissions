@@ -153,5 +153,7 @@ https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/
 
 a) Write a script that returns the balance of the user's $FLOW vault, and your custom vault. Make it organized so the client can easily read it.
 
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/4_profileVaults.cdc
+
 b) Write a script that neatly returns (at a minimum) the resource identifier and balance of all the (official) Fungible Token vaults that the user has in their account storage. You can be creative in whatever other information you want to return.
- 
+
