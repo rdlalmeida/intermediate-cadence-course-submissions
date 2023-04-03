@@ -2,7 +2,7 @@
 
 a) Write your own Fungible Token contract that implements the `FungibleToken` standard on Flow. Name the contract whatever you want. *NOTE: It is okay to find an example implementation online. But that implementation may overcomplicate the solution. So you may want to be careful.*
 
-* I create a token contract - RicardoCoin.cdc - very inspired in the FlowToken.cdc contract:
+* I've created a token contract - RicardoCoin.cdc - very inspired in the FlowToken.cdc contract:
 
 https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/contract/RicardoCoin.cdc
 
