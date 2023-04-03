@@ -97,6 +97,75 @@ pub contract Swap{
         }
     }
 
+    /*
+        This swap function, which sits outside of the Identity resource, implements the other version of the swap function that bypasses the usage of the Identity
+        resource. This function receives a reference to the user's FlowVault and uses a dedicated function to extract the address from the type of it
+        input:  incomingVault: @FlowToken.Vault - The vault to use for the swap process
+                vaultRef: &FlowToken.Vault - A reference for a Vault that should be saved into storage that is going to be used to get the owner's Address.
+        output: Void -  If the operation is successful, the required event are going to be emited and that's pretty much it
+    */
+    pub fun swap(incomingVault: @FlowToken.Vault, vaultRef: &FlowToken.Vault) {
+        // The rest of this function is similar to the previous one, minus the need of running it from a stored Identity resource
+        // Get a reference to the Vault where the incoming tokens are to be deposited
+        let adminFlowVaultRef: &FlowToken.Vault{FungibleToken.Receiver}
+            = Swap.account.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(FlowToken.vaultReceiverPublic).borrow() ??
+                panic("Unable to retrieve a FlowToken.Vault{FungibleToken.Receiver} reference for the admin account ".concat(Swap.account.address.toString()))
+
+        // Get the minter through a refence to the Admin in the custom token contract account
+        let ricardoAdminRef: &RicardoCoin.Administrator = Swap.account.borrow<&RicardoCoin.Administrator>(from: RicardoCoin.adminStorage) ??
+            panic("Unable to retrieve an Administrator reference for a RicardoCoin.Administrator from admin account ".concat(Swap.account.address.toString()))
+
+        // Validate the user by checking if the provided vault reference has a valid owner associated to it
+        if let user: PublicAccount = vaultRef.owner {
+            // If the code gets here, it's all good, I got a valid owner from a properly created reference
+        }
+        else {
+            // Otherwise, panic
+            panic("Unable to validate a user for this call. Please provide a reference to a FlowToken.Vault properly saved into a storage account to continue!")
+        }
+
+        // Carry on. The user is valid
+        let userRicardoVaultRef: &RicardoCoin.Vault{FungibleToken.Receiver} = vaultRef.owner!.getCapability<&RicardoCoin.Vault{FungibleToken.Receiver}>(RicardoCoin.vaultReceiverPublic).borrow() ??
+            panic("Unable to get a RicardoCoin.Vault receiver reference for user ".concat(vaultRef.owner!.address.toString()))
+        
+        // Calculate the amount of custom tokens to return to the user.
+        let lastAccess: UFix64? = Swap.userSwaps[vaultRef.owner!.address]
+
+        var multiplier: UFix64? = nil
+
+        if (lastAccess == nil) {
+            multiplier = 2.0
+        }
+        else {
+            // Adjust the multiplier to the minute
+            multiplier = 2.0*((getCurrentBlock().timestamp - lastAccess!)/60.0)
+        }
+
+        // Reset the user access
+        Swap.userSwaps[vaultRef.owner!.address] = getCurrentBlock().timestamp
+
+        let amountToReward: UFix64 = incomingVault.balance*(multiplier!)
+        let flowReceived: UFix64 = incomingVault.balance
+
+        // Create the minter to produce the reward tokens
+        let minter: @RicardoCoin.Minter <- ricardoAdminRef.createNewMinter(allowedAmount: amountToReward)
+
+        // Execute the swap
+        adminFlowVaultRef.deposit(from: <- incomingVault)
+
+        // Mint the reward tokens
+        let rewardVault: @RicardoCoin.Vault <- minter.mintTokens(amount: minter.allowedAmount)
+
+        // Done with the minter. Destroy it
+        destroy minter
+
+        // Deposit the reward into the user's custom token Vault
+        userRicardoVaultRef.deposit(from: <- rewardVault)
+
+        // Done. Finish this by emiting the corresponding Event
+        emit TokensSwappedSuccessfully(flowDeposited: flowReceived, tokensReceived: amountToReward, address: vaultRef.owner!.address)
+    }
+
     // The usual function to create the Swapper resource
     pub fun createSwapperIdentity(): @Swap.SwapperIdentity {
         let newSwapper: @Swap.SwapperIdentity <- create Swap.SwapperIdentity()

@@ -41,7 +41,7 @@ run_transaction2="flow transactions send $TRANSACTION2_PATH $TRANSACTION2_ARGS -
 # Run script 0
 # Verify Successful vault creation
 SCRIPT0_PATH=Chapter5.0/Day1/scripts/4_profileVaults.cdc
-SCRIPT0_ARGS="[0xb7fb1e0ae6485cf6,0x78617072bc4306ab,0x8ae00fb5a872b8f4]"
+SCRIPT0_ARGS="[0xb7fb1e0ae6485cf6,0x78617072bc4306ab,0x8ae00fb5a872b8f4,0x0c838d98cae56592]"
 
 run_script0="flow scripts execute $SCRIPT0_PATH $SCRIPT0_ARGS --network $NETWORK"
 
