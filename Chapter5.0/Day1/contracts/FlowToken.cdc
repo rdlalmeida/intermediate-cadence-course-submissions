@@ -7,7 +7,12 @@
 */
 
 import FungibleToken from "../../../../common_resources/contracts/FungibleToken.cdc"
+
+// Mainnet
 // import FungibleToken from 0xf233dcee88fe0abe
+
+// Testnet
+// import FungibleToken from 0x9a0766d93b6608b7
 
 pub contract FlowToken: FungibleToken {
     pub var totalSupply: UFix64

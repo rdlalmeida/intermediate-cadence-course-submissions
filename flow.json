@@ -10,6 +10,7 @@
 			 "source": "../common_resources/contracts/NonFungibleToken.cdc",
 			 "aliases": {
 				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0x631e88ae7f1d7c20",
 				"mainnet": "0x1d7e57aa55817448"
 			 }
 		},
@@ -30,6 +31,7 @@
 			 "source": "../common_resources/contracts/FungibleToken.cdc",
 			 "aliases": {
 				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0x9a0766d93b6608b7",
 				"mainnet": "0xf233dcee88fe0abe"
 			 }
 		},
@@ -37,6 +39,7 @@
 			"source": "../common_resources/contracts/MetadataViews.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0x631e88ae7f1d7c20",
 				"mainnet": "0x1d7e57aa55817448"
 			}
 		},
@@ -44,6 +47,7 @@
 			"source": "../common_resources/contracts/FLOAT.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0x0afe396ebc8eee65",
 				"mainnet": "0x2d4c3caffbeab845"
 			}
 		},
@@ -188,13 +192,15 @@
 		"RicardoCoin": {
 			"source": "./Chapter5.0/Day1/contracts/RicardoCoin.cdc",
 			"aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0xb7fb1e0ae6485cf6"
 			}
 		},
 		"FlowToken": {
 			"source": "./Chapter5.0/Day1/contracts/FlowToken.cdc",
 			"aliases": {
-				"emulator": "0xf8d6e0586b0a20c7"
+				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0xb7fb1e0ae6485cf6"
 			}
 		},
 		"FlowToken_bad": {
@@ -207,6 +213,13 @@
 			"source": "./Chapter5.0/Day1/contracts/RicardoCoinSuperAdmin.cdc",
 			"aliases": {
 				"emulator": "0xf8d6e0586b0a20c7"
+			}
+		},
+		"Swap": {
+			"source": "./Chapter5.0/Day1/contracts/Swap.cdc",
+			"aliases": {
+				"emulator": "0xf8d6e0586b0a20c7",
+				"testnet": "0xb7fb1e0ae6485cf6"
 			}
 		}
 	},
@@ -246,7 +259,7 @@
 			"key": "ef726b3d24265e90ee59430af5bbef73132d2680ea3455441d67bf02005c762e",
 			"__publickey__": "25f32079cce55d96ff40471ef693b5248be585c0efa92e12b04c6eafa4c15df6bba9ead416e5bba5aa364f963435e42451f958d2b9c4f34f3be16c99ba9e26ad"
 		},
-		"testnet-account": {
+		"testnet-account-admin": {
 			"address": "0xb7fb1e0ae6485cf6",
 			"key" : {
 				"type": "hex",
@@ -254,6 +267,45 @@
 				"signatureAlgorithm": "ECDSA_P256",
 				"hashAlgorithm": "SHA3_256",
 				"privateKey": "e0366adfd77f315346d77cbf3f5f5bc55f53623ecdaa5a0c15bfa46f244aa3af"
+			}
+		},
+		"testnet-account-01": {
+			"address": "0x78617072bc4306ab",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_P256",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "08f7d46d4f5e90f63460dbeb5691474874581b002bb97daa22362b60aafd0771",
+				"__publickey__": "99bfa48dd7e500a08a24ed37e96f8d5d8df5a47a7bd329d90c9a1f1021b037ac8cb52bfccca5dee679013c2cff4f3364ca1109fb242d26491b3910ec00aab572",
+				"__mnemonic__": "attend damp foam battle sugar runway slush barrel frequent maximum snack about",
+				"__derivation_path__": "m/44'/539'/0'/0/0"
+			}
+		},
+		"testnet-account-02": {
+			"address": "0x8ae00fb5a872b8f4",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_P256",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "12d50246d9fbbbbe0d156283df58f19e5e802c1fb61a1726ac48599a50f1f309",
+				"__publickey__": "11b40b1571619b5e5d36766a6b5cde6443352e72fd339a9c9e12e616e03322aa44b1798db5c0734e99128a1c1c83c0aaf210f19108d9c8c8cb64a9d2b1a806a3",
+				"__mnemonic__": "wisdom error hour battle power ignore goddess misery eight labor panda toss",
+				"__derivation_path__": "m/44'/539'/0'/0/0 "
+			}
+		},
+		"testnet-account-03": {
+			"address": "0x0c838d98cae56592",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_P256",
+				"hashAlgorithm": "SHA3_256",
+				"privateKey": "d41edfa87e92f89fab662ea13ee17f4b0384e6f20d590fc038586e2333450e4f",
+				"__publicKey__": "e41fa4631b0ee582c2b0310e62bca1279218f9b4d492d2545f334be43c07fd275f1f5f7879147358acf1e34c2cd6176b237fc039665975ed5c2caa44eec64349",
+				"__mnemonic__": "curve voyage october ladder embark rib butter tattoo devote fossil divide nurse",
+				"__derivation_path__": "m/44'/539'/0'/0/0 "
 			}
 		},
 		"blocto-testnet-account": {
@@ -270,14 +322,17 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"FlowToken",
 				"FungibleToken",
-				"RicardoCoinSuperAdmin",
-				"RicardoCoin"
+				"FlowToken",
+				"RicardoCoin",
+				"Swap"
 			]
 		},
 		"testnet": {
-			"testnet-account": [
+			"testnet-account-admin": [
+				"FlowToken",
+				"RicardoCoin",
+				"Swap"
 			]
 		}
 	}

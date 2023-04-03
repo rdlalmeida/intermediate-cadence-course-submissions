@@ -29,6 +29,9 @@ pub contract RicardoCoin: FungibleToken {
     // Event emitted when a new Burner reource is created
     pub event BurnerCreated()
 
+    // Event emitted when a new Vault is created
+    pub event EmptyVaultCreated()
+
     // Various storage and public paths
     pub let vaultStorage: StoragePath
     pub let adminStorage: StoragePath
@@ -139,7 +142,11 @@ pub contract RicardoCoin: FungibleToken {
     */
     pub fun createEmptyVault(): @FungibleToken.Vault {
         // Create and return a Vault with balance set to 0.0
-        return <- create Vault(balance: 0.0)
+        let emptyVault: @FungibleToken.Vault <- create Vault(balance: 0.0)
+
+        emit EmptyVaultCreated()
+
+        return <- emptyVault
     }
 
     /*

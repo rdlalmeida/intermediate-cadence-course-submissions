@@ -157,3 +157,14 @@ https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/
 
 b) Write a script that neatly returns (at a minimum) the resource identifier and balance of all the (official) Fungible Token vaults that the user has in their account storage. You can be creative in whatever other information you want to return.
 
+https://github.com/rdlalmeida/intermediate-cadence-course-submissions/blob/main/Chapter5.0/Day1/scripts/5_profileAccount.cdc
+
+## Part 6
+
+a) Write a second contract, `Swap`, that allows users deposit $FLOW and receive your custom token in return. The amount of tokens the user should get in return is `2*(THE TIME SINCE THEY LAST SWAPPED)`.
+
+TODO: CREATE TWO MORE TESTNET ACCOUNTS TO TEST THIS
+
+b) In the swapping function, make sure to prove who the person is that is attempting a swap. In other words, make sure someone couldn't swap for you. You must implement this function two ways:
+  - Using a custom resource you define to represent identity, and passing in a `@FlowToken.Vault` as an argument for the payment.
+  - Using a reference to the user's Flow Token vault that proves only they could pass such a reference in, and subsequently getting the address of the owner from that reference.
